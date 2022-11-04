@@ -1,6 +1,8 @@
-package comp3111.lab3.ex2;
+package comp3111_project;
 
 import java.io.*;
+
+import comp3111_project.Statistics;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -41,6 +43,8 @@ public class Library_skeleton extends Application {
 			br.readLine(); // skip the first line
 			while ((line = br.readLine()) != null) {
 				tempArr = line.split(delimiter);
+				System.out.print(tempArr);
+				System.out.print("\n");
 				person_data.add(new Person(tempArr[0], tempArr[1], tempArr[2], tempArr[3], tempArr[4], tempArr[5],
 						tempArr[6], tempArr[7]));
 			}
