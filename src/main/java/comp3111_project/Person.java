@@ -1,11 +1,14 @@
 package comp3111_project;
 
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 
 public class Person {
 	private final SimpleStringProperty studentid;
 	private final SimpleStringProperty studentname;
 	private final SimpleStringProperty email;
+	private int TeamNumber = -1; //-1 means not allocated a team
 	private Integer k1energy; //these aren't final so that the try catch doesn't return an error.
 	private Integer k2energy;
 	private Boolean k3tick1;
@@ -104,6 +107,12 @@ public class Person {
 		return concerns.get();
 	}
 
+	public void setTeam(int x) {
+		this.TeamNumber = x;
+	}
+	public int getTeam() {
+		return this.TeamNumber;
+	}
 //	public void setConcerns(String val) {
 //		concerns.set(val);
 //	}
