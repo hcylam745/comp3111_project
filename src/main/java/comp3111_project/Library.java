@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -16,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -26,7 +28,12 @@ import com.opencsv.exceptions.CsvValidationException;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import java.net.URL;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 public class Library extends Application {
 
 	private TableView<Statistics> stat_table = new TableView<Statistics>(); //is this class needed? i'll leave the decision to sid (output)
@@ -40,7 +47,8 @@ public class Library extends Application {
 			new Statistics("K3_Tick2 = 1", "3"), new Statistics("My_Preference = 1", "19"));
 
 	private final static ObservableList<Person> person_data = FXCollections.observableArrayList();
-
+	@FXML
+	private AnchorPane rootPane;
 	public static void read(String csvFile) throws IOException, CsvValidationException {
 		int counter = 0;
 		System.out.print("\n");
@@ -83,7 +91,7 @@ public class Library extends Application {
 	}
 
 	@Override
-	public void start(Stage stage_stat) {
+	public void start(Stage stage_stat)  throws Exception{
 		Scene scene_stat = new Scene(new Group());
 		stage_stat.setTitle("Table of students' personal data");
 		stage_stat.setWidth(450);
@@ -216,41 +224,59 @@ public class Library extends Application {
 					System.out.println(targetPerson.getTeam());
 					OutputPerson target = new OutputPerson(targetPerson.getStudentid(), targetPerson.getStudentname(),targetPerson.getTeam(),teams[targetPerson.getTeam()-1]);
 					// make a new table to show the person
-					TableView<OutputPerson> person_table2 = new TableView<OutputPerson>();
-					person_table2.setEditable(true);
-					TableColumn studentid_column2 = new TableColumn("Student_ID");
-					studentid_column2.setMinWidth(100);
-					studentid_column2.setCellValueFactory(new PropertyValueFactory<OutputPerson, String>("studentid"));
-					TableColumn studentname_column2 = new TableColumn("Student_Name");
-					studentname_column2.setMinWidth(200);
-					studentname_column2.setCellValueFactory(new PropertyValueFactory<OutputPerson, String>("studentname"));
-					TableColumn team_column2 = new TableColumn("Team");
-					team_column2.setMinWidth(100);
-					team_column2.setCellValueFactory(new PropertyValueFactory<OutputPerson, Integer>("TeamId"));
-					person_table2.getItems().add(target);
-					// add column of team members of person
-					TableColumn teamMembers_column = new TableColumn("Team Members");
-					teamMembers_column.setMinWidth(200);
-					teamMembers_column.setCellValueFactory(new PropertyValueFactory<OutputPerson, String>("TeamMembers"));
-					// add column of average k1 energy
-					TableColumn k1energy_column2 = new TableColumn("K1_Energy");
-					k1energy_column2.setMinWidth(100);
-					k1energy_column2.setCellValueFactory(new PropertyValueFactory<OutputPerson, Float>("TeamAvgk1"));
-					// add column of average k2 energy
-					TableColumn k2energy_column2 = new TableColumn("k2_Energy");
-					k2energy_column2.setMinWidth(100);
-					k2energy_column2.setCellValueFactory(new PropertyValueFactory<OutputPerson, Float>("TeamAvgk2"));
-					person_table2.getColumns().addAll(studentid_column2, studentname_column2, team_column2, teamMembers_column, k1energy_column2, k2energy_column2);
-					person_table2.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-					Stage query = new Stage();
-					Scene queryPerson = new Scene(new Group());
-					final VBox vbox_person2 = new VBox();
-					vbox_person2.setSpacing(5);
-					vbox_person2.setPadding(new Insets(10, 0, 0, 10));
-					vbox_person2.getChildren().addAll(label_person, person_table2);
-					((Group) queryPerson.getRoot()).getChildren().addAll(vbox_person2);
-					query.setScene(queryPerson);
-					query.show();
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudentInquiry.fxml"));
+//					fxmlLoader.setLocation(FXMLDocumentController.class.getResource("src/main/resources/StudentInquiry.fxml"));
+					
+					//get URL of the fxml file
+					URL url = getClass().getResource("/StudentInquiry.fxml");
+					//convert URL to a string
+					String path = url.toExternalForm();
+					System.out.println("THe file path is"+ path);
+					fxmlLoader.setLocation(url);
+					//load fxml file into a new stage 
+					Parent root1 = null;
+					try {
+						root1 = (Parent) fxmlLoader.load();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Stage test_stage = new Stage();
+					test_stage.setScene(new Scene(root1));
+					//change label student_name in the fxml file
+					Label student_name = (Label) root1.lookup("#student_name");
+					//change label student_id in the fxml file
+					Label student_id = (Label) root1.lookup("#student_id");
+					//change label team in the fxml file
+					Label team = (Label) root1.lookup("#team_number");
+					//change label team_name in the fxml file
+					Label k1_avg = (Label) root1.lookup("#k1_average");
+					Label k2_avg = (Label) root1.lookup("#k2_average");
+
+					student_name.setText(target.getStudentname());
+
+					student_id.setText(target.getStudentid());
+
+					team.setText(String.valueOf(target.getTeamId()));
+
+					k1_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk1())));
+					k2_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk2())));
+
+					int size = teams[target.getTeamId()-1].getNumberOfMembers();
+					int k= 0;
+					for (int i=0; i<size; i++){
+						if(teams[target.getTeamId()-1].getMember(i).getStudentid().equals(target.getStudentid())){
+                			continue;
+            			}
+						Label team_mate = (Label) root1.lookup("#teammate_"+(k+1));
+						team_mate.setText(teams[target.getTeamId()-1].getMember(i).getStudentname());
+						k++;
+					}
+
+					//change label in the fxml file
+
+					test_stage.show();
+					// pass the person to the new table
 				}
 			}
 		});
