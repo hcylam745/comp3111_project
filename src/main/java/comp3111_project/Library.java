@@ -1,9 +1,11 @@
 package comp3111_project;
 
+import com.sun.javafx.application.PlatformImpl;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.io.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,11 +36,13 @@ import java.net.URL;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
+
 public class Library extends Application {
 
-	private TableView<Statistics> stat_table = new TableView<Statistics>(); //is this class needed? i'll leave the decision to sid (output)
+	private TableView<Statistics> stat_table = new TableView<Statistics>(); // is this class needed? i'll leave the
+																			// decision to sid (output)
 	private TableView<Person> person_table = new TableView<Person>();
-	private static TableView<Team> team_table = new TableView<Team>();
+	public static TableView<Team> team_table;
 	private static Team teams[];
 	private final ObservableList<Statistics> stat_data = FXCollections.observableArrayList(
 			new Statistics("Total Number of Students", "100"),
@@ -47,51 +51,65 @@ public class Library extends Application {
 			new Statistics("K3_Tick2 = 1", "3"), new Statistics("My_Preference = 1", "19"));
 
 	private final static ObservableList<Person> person_data = FXCollections.observableArrayList();
-	@FXML
-	private AnchorPane rootPane;
+
+
 	public static void read(String csvFile) throws IOException, CsvValidationException {
+		System.out.println("Hello inside");
 		int counter = 0;
 		System.out.print("\n");
 		try (var fr = new FileReader(csvFile, StandardCharsets.UTF_8); var reader = new CSVReader(fr)) {
-			String [] tempArr;
-			while((tempArr = reader.readNext()) != null) {
+			String[] tempArr;
+			while ((tempArr = reader.readNext()) != null) {
 				if (counter == 0) {
 					counter++;
-					continue; 
+					continue;
 				}
-				person_data.add(new Person(tempArr[0],tempArr[1],tempArr[2],tempArr[3],
-						tempArr[4],tempArr[5],tempArr[6],tempArr[7],tempArr[8]));
+				person_data.add(new Person(tempArr[0], tempArr[1], tempArr[2], tempArr[3],
+						tempArr[4], tempArr[5], tempArr[6], tempArr[7], tempArr[8]));
 			}
 		}
 	}
-	//for process
-	public static void AllocateTeams(){
-		teams = new Team[34];
-		//put every person into a team
-		for (int i=0; i<100; i++) {
-			if(teams[i/3] == null) {
-				teams[i/3] = new Team();
-			}
-			teams[i/3].addMember(person_data.get(i));
-			person_data.get(i).setTeam(i/3+1);	
-		}
-		// add team to team table
-		for (int i=0; i<34; i++) {
-			team_table.getItems().add(teams[i]);
-		}
-	}
-	public static void main(String[] args) throws Exception {
 
+	// for process
+	public static void AllocateTeams() {
+		PlatformImpl.startup(() -> {
+			team_table = new TableView<>();
+			teams = new Team[34];
+			// put every person into a team
+			for (int i = 0; i < 100; i++) {
+				if (teams[i / 3] == null) {
+					teams[i / 3] = new Team();
+				}
+				teams[i / 3].addMember(person_data.get(i));
+				person_data.get(i).setTeam(i / 3 + 1);
+			}
+			// add team to team table
+			for (int i = 0; i < 34; i++) {
+				team_table.getItems().add(teams[i]);
+			}
+		});
+	}
+
+	public static void main(String[] args) throws Exception {
+//		Platform.runLater(() -> {
+//			try {
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+		System.out.println("Starting");
 		String csvFile = "src/main/resources/data.CSV";
 		Library.read(csvFile);
-		Library.AllocateTeams();
 		System.out.println("Hello");
+		Library.AllocateTeams();
+//				new Library().start(new Stage());
 		launch(args);
-
+	
 	}
 
 	@Override
-	public void start(Stage stage_stat)  throws Exception{
+	public void start(Stage stage_stat) throws Exception {
 		Scene scene_stat = new Scene(new Group());
 		stage_stat.setTitle("Table of students' personal data");
 		stage_stat.setWidth(450);
@@ -121,7 +139,6 @@ public class Library extends Application {
 		((Group) scene_stat.getRoot()).getChildren().addAll(vbox_stat);
 		stage_stat.setScene(scene_stat);
 
-
 		Stage stage_person = new Stage();
 		Scene scene_person = new Scene(new Group());
 		stage_person.setTitle("Table of statistics data");
@@ -144,7 +161,7 @@ public class Library extends Application {
 		TableColumn email_column = new TableColumn("email");
 		email_column.setMinWidth(100);
 		email_column.setCellValueFactory(new PropertyValueFactory<Statistics, String>("email"));
-		
+
 		TableColumn k1energy_column = new TableColumn("K1_Energy");
 		k1energy_column.setMinWidth(100);
 		k1energy_column.setCellValueFactory(new PropertyValueFactory<Statistics, String>("k1energy"));
@@ -170,7 +187,8 @@ public class Library extends Application {
 		concerns_column.setCellValueFactory(new PropertyValueFactory<Statistics, String>("concerns"));
 
 		person_table.setItems(person_data);
-		person_table.getColumns().addAll(studentid_column, studentname_column, email_column, k1energy_column, k2energy_column,
+		person_table.getColumns().addAll(studentid_column, studentname_column, email_column, k1energy_column,
+				k2energy_column,
 				k3trick1_column, k3trick2_column, mypreference_column, concerns_column);
 		person_table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		final VBox vbox_person = new VBox();
@@ -181,8 +199,8 @@ public class Library extends Application {
 		((Group) scene_person.getRoot()).getChildren().addAll(vbox_person);
 		Button searchButton = new Button("Search");
 		Button showStatisticsButton = new Button("Show Statistics");
-		//add button to the scene
-		// make a search box 
+		// add button to the scene
+		// make a search box
 		TextField searchBox = new TextField();
 		searchBox.setPromptText("Student_ID");
 		TextField searchBox2 = new TextField();
@@ -193,27 +211,26 @@ public class Library extends Application {
 		vbox_person.getChildren().addAll(searchBox, searchBox2, searchButton, showStatisticsButton);
 		searchButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event){
+			public void handle(ActionEvent event) {
 				String targetStudentId = searchBox.getText();
 				String targetStudentName = searchBox2.getText();
 				Person targetPerson;
 				// search for the student id in the table and show it
-				Person targetPerson2 = person_table.getItems().stream().filter(person -> person.getStudentname().equals(targetStudentName)).findFirst().orElse(null);
-				Person targetPerson1 = person_table.getItems().stream().filter(person -> person.getStudentid().equals(targetStudentId)).findFirst().orElse(null);	
-				if(targetPerson1 != null && targetPerson2 != null && !targetPerson1.getStudentid().equals(targetPerson2.getStudentid())){
+				Person targetPerson2 = person_table.getItems().stream()
+						.filter(person -> person.getStudentname().equals(targetStudentName)).findFirst().orElse(null);
+				Person targetPerson1 = person_table.getItems().stream()
+						.filter(person -> person.getStudentid().equals(targetStudentId)).findFirst().orElse(null);
+				if (targetPerson1 != null && targetPerson2 != null
+						&& !targetPerson1.getStudentid().equals(targetPerson2.getStudentid())) {
 					targetPerson = null;
 					System.out.println("Contradictory information");
-				}
-				else if(targetPerson1 != null && targetPerson2 == null){
+				} else if (targetPerson1 != null && targetPerson2 == null) {
 					targetPerson = targetPerson1;
-				}
-				else if(targetPerson2 != null && targetPerson1 == null){
+				} else if (targetPerson2 != null && targetPerson1 == null) {
 					targetPerson = targetPerson2;
-				}
-				else if(targetPerson1.getStudentid().equals(targetPerson2.getStudentid())){
+				} else if (targetPerson1.getStudentid().equals(targetPerson2.getStudentid())) {
 					targetPerson = targetPerson1; // they are both the same person information
-				}
-				else{
+				} else {
 					targetPerson = null;
 					System.out.println("Invalid Search Information");
 				}
@@ -222,18 +239,19 @@ public class Library extends Application {
 					person_table.getSelectionModel().select(targetPerson);
 					person_table.scrollTo(targetPerson);
 					System.out.println(targetPerson.getTeam());
-					OutputPerson target = new OutputPerson(targetPerson.getStudentid(), targetPerson.getStudentname(),targetPerson.getTeam(),teams[targetPerson.getTeam()-1]);
+					OutputPerson target = new OutputPerson(targetPerson.getStudentid(), targetPerson.getStudentname(),
+							targetPerson.getTeam(), teams[targetPerson.getTeam() - 1]);
 					// make a new table to show the person
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudentInquiry.fxml"));
-//					fxmlLoader.setLocation(FXMLDocumentController.class.getResource("src/main/resources/StudentInquiry.fxml"));
-					
-					//get URL of the fxml file
+					// fxmlLoader.setLocation(FXMLDocumentController.class.getResource("src/main/resources/StudentInquiry.fxml"));
+
+					// get URL of the fxml file
 					URL url = getClass().getResource("/StudentInquiry.fxml");
-					//convert URL to a string
+					// convert URL to a string
 					String path = url.toExternalForm();
-					System.out.println("THe file path is"+ path);
+					System.out.println("THe file path is" + path);
 					fxmlLoader.setLocation(url);
-					//load fxml file into a new stage 
+					// load fxml file into a new stage
 					Parent root1 = null;
 					try {
 						root1 = (Parent) fxmlLoader.load();
@@ -243,13 +261,13 @@ public class Library extends Application {
 					}
 					Stage test_stage = new Stage();
 					test_stage.setScene(new Scene(root1));
-					//change label student_name in the fxml file
+					// change label student_name in the fxml file
 					Label student_name = (Label) root1.lookup("#student_name");
-					//change label student_id in the fxml file
+					// change label student_id in the fxml file
 					Label student_id = (Label) root1.lookup("#student_id");
-					//change label team in the fxml file
+					// change label team in the fxml file
 					Label team = (Label) root1.lookup("#team_number");
-					//change label team_name in the fxml file
+					// change label team_name in the fxml file
 					Label k1_avg = (Label) root1.lookup("#k1_average");
 					Label k2_avg = (Label) root1.lookup("#k2_average");
 
@@ -262,18 +280,18 @@ public class Library extends Application {
 					k1_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk1())));
 					k2_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk2())));
 
-					int size = teams[target.getTeamId()-1].getNumberOfMembers();
-					int k= 0;
-					for (int i=0; i<size; i++){
-						if(teams[target.getTeamId()-1].getMember(i).getStudentid().equals(target.getStudentid())){
-                			continue;
-            			}
-						Label team_mate = (Label) root1.lookup("#teammate_"+(k+1));
-						team_mate.setText(teams[target.getTeamId()-1].getMember(i).getStudentname());
+					int size = teams[target.getTeamId() - 1].getNumberOfMembers();
+					int k = 0;
+					for (int i = 0; i < size; i++) {
+						if (teams[target.getTeamId() - 1].getMember(i).getStudentid().equals(target.getStudentid())) {
+							continue;
+						}
+						Label team_mate = (Label) root1.lookup("#teammate_" + (k + 1));
+						team_mate.setText(teams[target.getTeamId() - 1].getMember(i).getStudentname());
 						k++;
 					}
 
-					//change label in the fxml file
+					// change label in the fxml file
 
 					test_stage.show();
 					// pass the person to the new table
@@ -287,23 +305,23 @@ public class Library extends Application {
 				stage_stat.show();
 			}
 		});
-		//make new stage for chart
+		// make new stage for chart
 		Stage stage_chart = new Stage();
-		//make button called show graphs
+		// make button called show graphs
 		Button showGraphsButton = new Button("Show Graphs");
-		//add button to the scene
+		// add button to the scene
 		vbox_person.getChildren().addAll(showGraphsButton);
 		// make line chart of K1 energy of all students
-		//defining the axes
-        final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
-		final LineChart<Number,Number> lineChart = 
-                new LineChart<Number,Number>(xAxis,yAxis);
+		// defining the axes
+		final NumberAxis xAxis = new NumberAxis();
+		final NumberAxis yAxis = new NumberAxis();
+		final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 		lineChart.setTitle("K1 and K2 energy of students");
 		XYChart.Series series = new XYChart.Series();
 		series.setName("K1 energy");
 		// sort persons in person_table by K1 energy, descending
-		ObservableList<Person> sortedPersons = person_table.getItems().sorted((p1, p2) -> p2.getK1energy().compareTo(p1.getK1energy()));
+		ObservableList<Person> sortedPersons = person_table.getItems()
+				.sorted((p1, p2) -> p2.getK1energy().compareTo(p1.getK1energy()));
 		// add sorted persons to the line chart
 		int i = 0;
 		for (Person person : sortedPersons) {
@@ -313,12 +331,12 @@ public class Library extends Application {
 		XYChart.Series series2 = new XYChart.Series();
 		series2.setName("K2 energy");
 		// add data to the line chart
-		i =0;
+		i = 0;
 		for (Person person : sortedPersons) {
 			series2.getData().add(new XYChart.Data(i++, person.getK2energy()));
 		}
 		// add the line chart to the scene
-		Scene scene  = new Scene(lineChart,800,600);
+		Scene scene = new Scene(lineChart, 800, 600);
 		lineChart.getData().add(series);
 		lineChart.getData().add(series2);
 		stage_chart.setScene(scene);
@@ -338,14 +356,14 @@ public class Library extends Application {
 		// make new table for team average energy
 		stage_person.setScene(scene_person);
 		final NumberAxis teamXAxis = new NumberAxis();
-        final NumberAxis teamyAxis = new NumberAxis();
-		final LineChart<Number,Number> teamK1Chart = 
-				new LineChart<Number,Number>(teamXAxis,teamyAxis);
+		final NumberAxis teamyAxis = new NumberAxis();
+		final LineChart<Number, Number> teamK1Chart = new LineChart<Number, Number>(teamXAxis, teamyAxis);
 		teamK1Chart.setTitle("Team Average K1 Energy");
 		XYChart.Series teamK1Series = new XYChart.Series();
 		teamK1Series.setName("Team Average K1 Energy");
 		// sort teams in team_table by average K1 energy, descending
-		ObservableList<Team> sortedTeams = team_table.getItems().sorted((t1, t2) -> t2.averageK1().compareTo(t1.averageK1()));
+		ObservableList<Team> sortedTeams = team_table.getItems()
+				.sorted((t1, t2) -> t2.averageK1().compareTo(t1.averageK1()));
 		// add sorted teams to the line chart
 		i = 0;
 		for (Team team : sortedTeams) {
@@ -355,7 +373,7 @@ public class Library extends Application {
 		XYChart.Series teamK2Series = new XYChart.Series();
 		teamK2Series.setName("Team Average K2 Energy");
 		// add data to the line chart
-		i =0;
+		i = 0;
 		for (Team team : sortedTeams) {
 			teamK2Series.getData().add(new XYChart.Data(i++, team.averageK2()));
 		}
@@ -363,12 +381,12 @@ public class Library extends Application {
 		XYChart.Series teamK3Series = new XYChart.Series();
 		teamK3Series.setName("Team Average K1+K2 Energy");
 		// add data to the line chart
-		i =0;
+		i = 0;
 		for (Team team : sortedTeams) {
 			teamK3Series.getData().add(new XYChart.Data(i++, team.teamAvg()));
 		}
 		// add the line chart to the scene
-		Scene teamScene  = new Scene(teamK1Chart,800,600);
+		Scene teamScene = new Scene(teamK1Chart, 800, 600);
 		teamK1Chart.getData().add(teamK1Series);
 		teamK1Chart.getData().add(teamK2Series);
 		teamK1Chart.getData().add(teamK3Series);
