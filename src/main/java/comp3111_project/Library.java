@@ -112,8 +112,8 @@ public class Library extends Application {
 
 //			person_data.get(i).setTeam(i/3+1);
 		}
-		System.out.println("Average k1 = " + atu.getAverageK1());
-		System.out.println(atu.getK1().stream().filter(p -> p.getK1energy() >= atu.getAverageK1()).collect(Collectors.toList()).size());
+//		System.out.println("Average k1 = " + atu.getAverageK1());
+//		System.out.println(atu.getK1().stream().filter(p -> p.getK1energy() >= atu.getAverageK1()).collect(Collectors.toList()).size());
 		// add team to team table
 		for (int i=0; i<33; i++) {
 			team_table.getItems().add(teams[i]);

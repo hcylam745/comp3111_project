@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface ATUInterface {
     public Optional<Person> selectK(int i,int k,Integer...target);
-    public Double getAverageK1();
 }
