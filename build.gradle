@@ -21,11 +21,16 @@ repositories {
 
 dependencies {
 	implementation "com.opencsv:opencsv:5.7.1"
+	implementation "junit:junit:4.13"
 }
 
 javafx {
 	version = "17.0.2"
 	modules = ['javafx.controls',  'javafx.fxml']
+}
+
+test {
+	useJUnitPlatform()
 }
 
 mainClassName = 'comp3111_project.Library'

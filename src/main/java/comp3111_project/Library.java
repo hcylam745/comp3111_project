@@ -37,6 +37,7 @@ public class Library extends Application {
 
 	private TableView<Statistics> stat_table = new TableView<Statistics>();
 	private TableView<Person> person_table = new TableView<Person>();
+	private static GridPane autogen_input = new GridPane();
 
 	private final static ObservableList<Statistics> stat_data = FXCollections.observableArrayList();
 
@@ -92,6 +93,167 @@ public class Library extends Application {
 		stat_data.add(new Statistics("My_Preference = 1", String.valueOf(Preference)));
 	}
 	
+	public static Boolean submitAutogen(TextField studentNo, TextField avgK1, TextField avgK2,
+			TextField probK3_1, TextField probK3_2, TextField probPref) {
+		// get text from the textfields & attempt to parse, pass error if cannot parse.
+		Integer studentNumberNo;
+		Integer averageK1No;
+		Integer averageK2No;
+		Integer probabilityK3_1No;
+		Integer probabilityK3_2No;
+		Integer probabilityPrefNo;
+		try {
+			studentNumberNo = Integer.parseInt(studentNo.getText());
+			averageK1No = Integer.parseInt(avgK1.getText());
+			averageK2No = Integer.parseInt(avgK2.getText());
+			probabilityK3_1No = Integer.parseInt(probK3_1.getText());
+			probabilityK3_2No = Integer.parseInt(probK3_2.getText());
+			probabilityPrefNo = Integer.parseInt(probPref.getText());
+			
+		} catch (Exception e) {
+			HBox box8 = new HBox();
+			Text errorPrompt = new Text();
+			box8.getChildren().addAll(errorPrompt);
+			errorPrompt.setText("There was an error in parsing some of the data fields inputted.\nPlease input all integers, and percentages in range of 0 to 100");
+			autogen_input.add(box8, 0, 7);
+			return false;
+		}
+		// checks to make sure the percentages inputted are in range of 0 to 100.
+		if (averageK1No > 100 || averageK1No < 0 || averageK2No > 100 || averageK2No < 2 || probabilityK3_1No > 100 ||
+				probabilityK3_1No < 0 || probabilityK3_2No > 100 || probabilityK3_2No < 0 || probabilityPrefNo > 100 || 
+				probabilityPrefNo < 0) {
+			HBox box8 = new HBox();
+			Text errorPrompt = new Text();
+			box8.getChildren().addAll(errorPrompt);
+			errorPrompt.setText("There was an error in parsing some of the data fields inputted.\nPlease input all integers, and percentages in range of 0 to 100");
+			autogen_input.add(box8, 0, 7);
+			return false;
+		}
+		// if studentnumberno is larger than 500, set to 500, if smaller than 200, set to 200.
+		if (studentNumberNo > 500) {
+			studentNumberNo = 500;
+		} else if (studentNumberNo < 200) {
+			studentNumberNo = 200;
+		}
+		
+		//generate a list of sample names from sample_names csv and make the size according to studentNumberNo
+		ArrayList<String> firstNames = new ArrayList<String>();
+		ArrayList<String> lastNames = new ArrayList<String>();
+		String sampleNamesFile = "src/main/resources/sample_names.CSV";
+		try {
+			File file = new File(sampleNamesFile);
+			InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+			String line = " ";
+			while ((line = br.readLine()) != null) {
+				firstNames.add(line.split(",")[0]);
+				lastNames.add(line.split(",")[1]);
+			}
+			br.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		ArrayList<String> sampleNames = new ArrayList<String>();
+		Integer counter = 0;
+		for (Integer i = 0; i < firstNames.size(); i++) {
+			if (counter >= studentNumberNo) {
+				break;
+			}
+			for (Integer j = 0; j < lastNames.size(); j++) {
+				if (counter >= studentNumberNo) {
+					break;
+				}
+				sampleNames.add(firstNames.get(i) + "," + lastNames.get(j));
+				counter++;
+			}
+		}
+		
+		//generate arraylist of size studentnumberno that has unique student ids.
+		ArrayList<String> sampleIDs = new ArrayList<String>();
+		Integer id = Integer.parseInt(String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
+				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
+				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
+				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)));
+		// to make sure that the ranomly generated ID will never go over 99999999
+		if (id >= 90000000) {
+			id -= 10000000;
+		}
+		for (Integer i = 0; i < studentNumberNo; i++) {
+			sampleIDs.add(String.valueOf(id));
+			id += (int)Math.round(Math.random() * 1000) + 1;
+		}
+		
+		//generate array of k1 and k2 energy per student.
+		//
+		// k1temp and k2temp randomly generate a number from 0 - 100, then it takes average k1/k2 inputted by the user, and
+		// adds another entry into the k1/k2 array such that the average of the two added numbers always equals k1/k2 average
+		// inputted by the user.
+		//
+		averageK1No += (int)((Math.random() * 10) - 5);
+		averageK2No += (int)((Math.random() * 10) - 5);
+		ArrayList<String> k1Energies = new ArrayList<String>();
+		ArrayList<String> k2Energies = new ArrayList<String>();
+		for (Integer i = 0; i < Math.floor(studentNumberNo/2); i++) {
+			Long k1temp = Math.round((Math.random() * 100));
+			Long k2temp = Math.round((Math.random() * 100));
+			Integer k1temp_2 = Math.round((averageK1No * 2) - k1temp);
+			Integer k2temp_2 = Math.round((averageK2No * 2) - k2temp);
+			if (k1temp_2 > 100) {
+				k1temp += k1temp_2 - 100;
+				k1temp_2 = 100;
+			}
+			if (k1temp_2 < 0) {
+				k1temp += k1temp_2;
+				k1temp_2 = 0;
+			}
+			if (k2temp_2 > 100) {
+				k2temp += k2temp_2 - 100;
+				k2temp_2 = 100;
+			}
+			if (k2temp_2 < 0) {
+				k2temp += k2temp_2;
+				k2temp_2 = 0;
+			}
+			k1Energies.add(String.valueOf(k1temp));
+			k2Energies.add(String.valueOf(k2temp));
+			k1Energies.add(String.valueOf(k1temp_2));
+			k2Energies.add(String.valueOf(k2temp_2));
+		}
+		// if the number of students is odd, then the method of adding pairs above will not work, so just add a new value
+		// exactly on the averages such that the average will also come out to the same.
+		if (studentNumberNo % 2 != 0) {
+			k1Energies.add(String.valueOf(averageK1No));
+			k2Energies.add(String.valueOf(averageK2No));
+		}
+		
+		//all inputs have been parsed, now generate dataset.
+		Integer k3_1No = (int)Math.round(probabilityK3_1No / 100.0 * studentNumberNo);
+		Integer k3_2No = (int)Math.round(probabilityK3_2No / 100.0 * studentNumberNo);
+		Integer prefNo = (int)Math.round(probabilityPrefNo / 100.0 * studentNumberNo);
+		for (Integer i = 0; i < studentNumberNo; i++) {
+			String k3_1 = "0";
+			if (((Math.random() > 0.5) || (k3_1No == studentNumberNo - i)) && k3_1No > 0) {
+				k3_1 = "1";
+				k3_1No--;
+			}
+			String k3_2 = "0";
+			if (((Math.random() > 0.5) || (k3_2No == studentNumberNo - i)) && k3_2No > 0) {
+				k3_2 = "1";
+				k3_2No--;
+			}
+			String pref = "0";
+			if (((Math.random() > 0.5) || (prefNo == studentNumberNo - i)) && prefNo > 0) {
+				pref = "1";
+				prefNo--;
+			}
+			String email = Character.toLowerCase(sampleNames.get(i).split(",")[0].charAt(0)) + 
+					sampleNames.get(i).split(",")[1].toLowerCase() + "@connect.ust.hk";
+			person_data.add(new Person(sampleIDs.get(i), sampleNames.get(i), email, k1Energies.get(i), k2Energies.get(i), 
+					k3_1, k3_2, pref, ""));
+		}
+		return true;
+	}
+	
 	public static void read(String csvFile) throws IOException, CsvValidationException {
 		int counter = 0;
 		System.out.print("\n");
@@ -125,7 +287,7 @@ public class Library extends Application {
 		launch(args);
 
 	}
-
+	
 	@Override
 	public void start(Stage stage_stat) {
 		
@@ -285,10 +447,10 @@ public class Library extends Application {
 		});
 		
 		Stage stage_auto_generate = new Stage();
-		
+		stage_auto_generate.setTitle("Input your desired values for Auto-Generation");
 		//gridpane and hbox used to line up text and textboxes horizontally, as well as to put them in rows.
-		GridPane root = new GridPane();
-		root.setAlignment(Pos.CENTER);
+		//GridPane root = new GridPane();
+		autogen_input.setAlignment(Pos.CENTER);
 		
 		HBox box1 = new HBox();
 		Text studentNoPrompt = new Text();
@@ -357,15 +519,15 @@ public class Library extends Application {
 		box7.setPrefWidth(600);
 		HBox.setHgrow(submitButton, Priority.ALWAYS);
 		
-		root.add(box1, 0, 0);
-		root.add(box2, 0, 1);
-		root.add(box3, 0, 2);
-		root.add(box4, 0, 3);
-		root.add(box5, 0, 4);
-		root.add(box6, 0, 5);
-		root.add(box7, 0, 6);
+		autogen_input.add(box1, 0, 0);
+		autogen_input.add(box2, 0, 1);
+		autogen_input.add(box3, 0, 2);
+		autogen_input.add(box4, 0, 3);
+		autogen_input.add(box5, 0, 4);
+		autogen_input.add(box6, 0, 5);
+		autogen_input.add(box7, 0, 6);
 		
-		Scene scene_auto_generate = new Scene(root, 800, 800);
+		Scene scene_auto_generate = new Scene(autogen_input, 800, 800);
 		
 		stage_auto_generate.setHeight(300);
 		stage_auto_generate.setWidth(700);
@@ -381,162 +543,9 @@ public class Library extends Application {
 		submitButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				// get text from the textfields & attempt to parse, pass error if cannot parse.
-				Integer studentNumberNo;
-				Integer averageK1No;
-				Integer averageK2No;
-				Integer probabilityK3_1No;
-				Integer probabilityK3_2No;
-				Integer probabilityPrefNo;
-				try {
-					studentNumberNo = Integer.parseInt(studentNo.getText());
-					averageK1No = Integer.parseInt(avgK1.getText());
-					averageK2No = Integer.parseInt(avgK2.getText());
-					probabilityK3_1No = Integer.parseInt(probK3_1.getText());
-					probabilityK3_2No = Integer.parseInt(probK3_2.getText());
-					probabilityPrefNo = Integer.parseInt(probPref.getText());
-					
-				} catch (Exception e) {
-					HBox box8 = new HBox();
-					Text errorPrompt = new Text();
-					box8.getChildren().addAll(errorPrompt);
-					errorPrompt.setText("There was an error in parsing some of the data fields inputted.\nPlease input all integers");
-					root.add(box8, 0, 7);
+				if (submitAutogen(studentNo, avgK1, avgK2, probK3_1, probK3_2, probPref) == false) {
 					return;
-				}
-				// checks to make sure the percentages inputted are in range of 0 to 100.
-				if (averageK1No > 100 || averageK1No < 0 || averageK2No > 100 || averageK2No < 2 || probabilityK3_1No > 100 ||
-						probabilityK3_1No < 0 || probabilityK3_2No > 100 || probabilityK3_2No < 0 || probabilityPrefNo > 100 || 
-						probabilityPrefNo < 0) {
-					HBox box8 = new HBox();
-					Text errorPrompt = new Text();
-					box8.getChildren().addAll(errorPrompt);
-					errorPrompt.setText("There was an error in parsing some of the data fields inputted.\nPlease input all percentages in range of 0 to 100");
-					root.add(box8, 0, 7);
-					return;
-				}
-				// if studentnumberno is larger than 500, set to 500, if smaller than 200, set to 200.
-				if (studentNumberNo > 500) {
-					studentNumberNo = 500;
-				} else if (studentNumberNo < 200) {
-					studentNumberNo = 200;
-				}
-				
-				//generate a list of sample names from sample_names csv and make the size according to studentNumberNo
-				ArrayList<String> firstNames = new ArrayList<String>();
-				ArrayList<String> lastNames = new ArrayList<String>();
-				String sampleNamesFile = "src/main/resources/sample_names.CSV";
-				try {
-					File file = new File(sampleNamesFile);
-					InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
-					BufferedReader br = new BufferedReader(isr);
-					String line = " ";
-					while ((line = br.readLine()) != null) {
-						firstNames.add(line.split(",")[0]);
-						lastNames.add(line.split(",")[1]);
-					}
-					br.close();
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
-				}
-				ArrayList<String> sampleNames = new ArrayList<String>();
-				Integer counter = 0;
-				for (Integer i = 0; i < firstNames.size(); i++) {
-					if (counter >= studentNumberNo) {
-						break;
-					}
-					for (Integer j = 0; j < lastNames.size(); j++) {
-						if (counter >= studentNumberNo) {
-							break;
-						}
-						sampleNames.add(firstNames.get(i) + "," + lastNames.get(j));
-						counter++;
-					}
-				}
-				
-				//generate arraylist of size studentnumberno that has unique student ids.
-				ArrayList<String> sampleIDs = new ArrayList<String>();
-				Integer id = Integer.parseInt(String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
-						String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
-						String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
-						String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)));
-				// to make sure that the ranomly generated ID will never go over 99999999
-				if (id >= 90000000) {
-					id -= 10000000;
-				}
-				for (Integer i = 0; i < studentNumberNo; i++) {
-					sampleIDs.add(String.valueOf(id));
-					id += (int)Math.round(Math.random() * 1000) + 1;
-				}
-				
-				//generate array of k1 and k2 energy per student.
-				//
-				// k1temp and k2temp randomly generate a number from 0 - 100, then it takes average k1/k2 inputted by the user, and
-				// adds another entry into the k1/k2 array such that the average of the two added numbers always equals k1/k2 average
-				// inputted by the user.
-				//
-				averageK1No += (int)((Math.random() * 10) - 5);
-				averageK2No += (int)((Math.random() * 10) - 5);
-				ArrayList<String> k1Energies = new ArrayList<String>();
-				ArrayList<String> k2Energies = new ArrayList<String>();
-				for (Integer i = 0; i < Math.floor(studentNumberNo/2); i++) {
-					Long k1temp = Math.round((Math.random() * 100));
-					Long k2temp = Math.round((Math.random() * 100));
-					Integer k1temp_2 = Math.round((averageK1No * 2) - k1temp);
-					Integer k2temp_2 = Math.round((averageK2No * 2) - k2temp);
-					if (k1temp_2 > 100) {
-						k1temp += k1temp_2 - 100;
-						k1temp_2 = 100;
-					}
-					if (k1temp_2 < 0) {
-						k1temp += k1temp_2;
-						k1temp_2 = 0;
-					}
-					if (k2temp_2 > 100) {
-						k2temp += k2temp_2 - 100;
-						k2temp_2 = 100;
-					}
-					if (k2temp_2 < 0) {
-						k2temp += k2temp_2;
-						k2temp_2 = 0;
-					}
-					k1Energies.add(String.valueOf(k1temp));
-					k2Energies.add(String.valueOf(k2temp));
-					k1Energies.add(String.valueOf(k1temp_2));
-					k2Energies.add(String.valueOf(k2temp_2));
-				}
-				// if the number of students is odd, then the method of adding pairs above will not work, so just add a new value
-				// exactly on the averages such that the average will also come out to the same.
-				if (studentNumberNo % 2 != 0) {
-					k1Energies.add(String.valueOf(averageK1No));
-					k2Energies.add(String.valueOf(averageK2No));
-				}
-				
-				//all inputs have been parsed, now generate dataset.
-				Integer k3_1No = (int)Math.round(probabilityK3_1No / 100.0 * studentNumberNo);
-				Integer k3_2No = (int)Math.round(probabilityK3_2No / 100.0 * studentNumberNo);
-				Integer prefNo = (int)Math.round(probabilityPrefNo / 100.0 * studentNumberNo);
-				for (Integer i = 0; i < studentNumberNo; i++) {
-					String k3_1 = "0";
-					if (((Math.random() > 0.5) || (k3_1No == studentNumberNo - i)) && k3_1No > 0) {
-						k3_1 = "1";
-						k3_1No--;
-					}
-					String k3_2 = "0";
-					if (((Math.random() > 0.5) || (k3_2No == studentNumberNo - i)) && k3_2No > 0) {
-						k3_2 = "1";
-						k3_2No--;
-					}
-					String pref = "0";
-					if (((Math.random() > 0.5) || (prefNo == studentNumberNo - i)) && prefNo > 0) {
-						pref = "1";
-						prefNo--;
-					}
-					String email = Character.toLowerCase(sampleNames.get(i).split(",")[0].charAt(0)) + 
-							sampleNames.get(i).split(",")[1].toLowerCase() + "@connect.ust.hk";
-					person_data.add(new Person(sampleIDs.get(i), sampleNames.get(i), email, k1Energies.get(i), k2Energies.get(i), 
-							k3_1, k3_2, pref, ""));
-				}
+				};
 				Library.calculateStat();
 				stage_select_input.hide();
 				stage_auto_generate.hide();
