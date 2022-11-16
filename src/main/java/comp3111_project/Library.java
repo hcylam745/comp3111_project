@@ -186,7 +186,7 @@ public class Library extends Application {
 				if (counter >= studentNumberNo) {
 					break;
 				}
-				sampleNames.add(firstNames.get(i) + "," + lastNames.get(j));
+				sampleNames.add(firstNames.get(i) + ", " + lastNames.get(j));
 				counter++;
 			}
 		}
@@ -327,12 +327,9 @@ public class Library extends Application {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String csvFile = "src/main/resources/data.CSV";
-		Library.read(csvFile);
+
 		System.out.println("Hello");
-		Library.AllocateTeams();
 		System.out.println("Finish allocation");
-//				new Library().start(new Stage());
 		launch(args);
 	
 	}
@@ -588,38 +585,39 @@ public class Library extends Application {
 		// add button to the scene
 		vbox_person.getChildren().addAll(showGraphsButton);
 		// make line chart of K1 energy of all students
-		// defining the axes
-		final NumberAxis xAxis = new NumberAxis();
-		final NumberAxis yAxis = new NumberAxis();
-		final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-		lineChart.setTitle("K1 and K2 energy of students");
-		XYChart.Series series = new XYChart.Series();
-		series.setName("K1 energy");
-		// sort persons in person_table by K1 energy, descending
-		ObservableList<Person> sortedPersons = person_table.getItems()
-				.sorted((p1, p2) -> p2.getK1energy().compareTo(p1.getK1energy()));
-		// add sorted persons to the line chart
-		int i = 0;
-		for (Person person : sortedPersons) {
-			series.getData().add(new XYChart.Data(i++, person.getK1energy()));
-		}
-		// make line chart of K2 energy of all students
-		XYChart.Series series2 = new XYChart.Series();
-		series2.setName("K2 energy");
-		// add data to the line chart
-		i = 0;
-		for (Person person : sortedPersons) {
-			series2.getData().add(new XYChart.Data(i++, person.getK2energy()));
-		}
-		// add the line chart to the scene
-		Scene scene = new Scene(lineChart, 800, 600);
-		lineChart.getData().add(series);
-		lineChart.getData().add(series2);
-		stage_chart.setScene(scene);
+
 		// show the stage when showGraphsButton is clicked
 		showGraphsButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				// defining the axes
+				final NumberAxis xAxis = new NumberAxis();
+				final NumberAxis yAxis = new NumberAxis();
+				final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+				lineChart.setTitle("K1 and K2 energy of students");
+				XYChart.Series series = new XYChart.Series();
+				series.setName("K1 energy");
+				// sort persons in person_table by K1 energy, descending
+				ObservableList<Person> sortedPersons = person_table.getItems()
+						.sorted((p1, p2) -> p2.getK1energy().compareTo(p1.getK1energy()));
+				// add sorted persons to the line chart
+				int i = 0;
+				for (Person person : sortedPersons) {
+					series.getData().add(new XYChart.Data(i++, person.getK1energy()));
+				}
+				// make line chart of K2 energy of all students
+				XYChart.Series series2 = new XYChart.Series();
+				series2.setName("K2 energy");
+				// add data to the line chart
+				i = 0;
+				for (Person person : sortedPersons) {
+					series2.getData().add(new XYChart.Data(i++, person.getK2energy()));
+				}
+				// add the line chart to the scene
+				Scene scene = new Scene(lineChart, 800, 600);
+				lineChart.getData().add(series);
+				lineChart.getData().add(series2);
+				stage_chart.setScene(scene);
 				stage_chart.show();
 			}
 		});
@@ -631,52 +629,51 @@ public class Library extends Application {
 		Stage stage_teamavg = new Stage();
 		// make new table for team average energy
 		stage_person.setScene(scene_person);
-		final NumberAxis teamXAxis = new NumberAxis();
-		final NumberAxis teamyAxis = new NumberAxis();
-		final LineChart<Number, Number> teamK1Chart = new LineChart<Number, Number>(teamXAxis, teamyAxis);
-		teamK1Chart.setTitle("Team Average K1 Energy");
-		XYChart.Series teamK1Series = new XYChart.Series();
-		teamK1Series.setName("Team Average K1 Energy");
-		// sort teams in team_table by average K1 energy, descending
-		ObservableList<Team> sortedTeams = team_table.getItems()
-				.sorted((t1, t2) -> t2.averageK1().compareTo(t1.averageK1()));
-		// add sorted teams to the line chart
-		i = 0;
-		for (Team team : sortedTeams) {
-			teamK1Series.getData().add(new XYChart.Data(i++, team.averageK1()));
-		}
-		// make new line chart for team average K2 energy
-		XYChart.Series teamK2Series = new XYChart.Series();
-		teamK2Series.setName("Team Average K2 Energy");
-		// add data to the line chart
-		i = 0;
-		for (Team team : sortedTeams) {
-			teamK2Series.getData().add(new XYChart.Data(i++, team.averageK2()));
-		}
-		// make new line chart for team average K1+K2 energy
-		XYChart.Series teamK3Series = new XYChart.Series();
-		teamK3Series.setName("Team Average K1+K2 Energy");
-		// add data to the line chart
-		i = 0;
-		for (Team team : sortedTeams) {
-			teamK3Series.getData().add(new XYChart.Data(i++, team.teamAvg()));
-		}
-		// add the line chart to the scene
-		Scene teamScene = new Scene(teamK1Chart, 800, 600);
-		teamK1Chart.getData().add(teamK1Series);
-		teamK1Chart.getData().add(teamK2Series);
-		teamK1Chart.getData().add(teamK3Series);
-		stage_teamavg.setScene(teamScene);
 		// show the stage when showTeamAvgButton is clicked
 		showTeamAvgButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				final NumberAxis teamXAxis = new NumberAxis();
+				final NumberAxis teamyAxis = new NumberAxis();
+				final LineChart<Number, Number> teamK1Chart = new LineChart<Number, Number>(teamXAxis, teamyAxis);
+				teamK1Chart.setTitle("Team Average K1 Energy");
+				XYChart.Series teamK1Series = new XYChart.Series();
+				teamK1Series.setName("Team Average K1 Energy");
+				// sort teams in team_table by average K1 energy, descending
+				ObservableList<Team> sortedTeams = team_table.getItems()
+						.sorted((t1, t2) -> t2.averageK1().compareTo(t1.averageK1()));
+				// add sorted teams to the line chart
+				int i = 0;
+				for (Team team : sortedTeams) {
+					teamK1Series.getData().add(new XYChart.Data(i++, team.averageK1()));
+				}
+				// make new line chart for team average K2 energy
+				XYChart.Series teamK2Series = new XYChart.Series();
+				teamK2Series.setName("Team Average K2 Energy");
+				// add data to the line chart
+				i = 0;
+				for (Team team : sortedTeams) {
+					teamK2Series.getData().add(new XYChart.Data(i++, team.averageK2()));
+				}
+				// make new line chart for team average K1+K2 energy
+				XYChart.Series teamK3Series = new XYChart.Series();
+				teamK3Series.setName("Team Average K1+K2 Energy");
+				// add data to the line chart
+				i = 0;
+				for (Team team : sortedTeams) {
+					teamK3Series.getData().add(new XYChart.Data(i++, team.teamAvg()));
+				}
+				// add the line chart to the scene
+				Scene teamScene = new Scene(teamK1Chart, 800, 600);
+				teamK1Chart.getData().add(teamK1Series);
+				teamK1Chart.getData().add(teamK2Series);
+				teamK1Chart.getData().add(teamK3Series);
+				stage_teamavg.setScene(teamScene);
+
 				stage_teamavg.show();
 			}
 		});
 
-		stage_person.show();
-		//stage_person.show();
 		
 		csvReadButton.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
 			@Override
@@ -688,9 +685,10 @@ public class Library extends Application {
 					return;
 				}
 				Library.calculateStat();
+				Library.AllocateTeams();
 				stage_select_input.hide();
 				stage_person.show();
-				stage_stat.show();
+//				stage_stat.show();
 			}
 		});
 		
@@ -706,7 +704,7 @@ public class Library extends Application {
 		TextField studentNo = new TextField();
 		
 		box1.getChildren().addAll(studentNoPrompt,studentNo);
-		box1.setPrefWidth(600);
+		box1.setPrefWidth(800);
 		box1.setSpacing(50);
 		HBox.setHgrow(studentNo, Priority.ALWAYS);
 		
@@ -716,7 +714,7 @@ public class Library extends Application {
 		TextField avgK1 = new TextField();
 		
 		box2.getChildren().addAll(avgK1Prompt,avgK1);
-		box2.setPrefWidth(600);
+		box2.setPrefWidth(800);
 		box2.setSpacing(50);
 		HBox.setHgrow(avgK1, Priority.ALWAYS);
 		
@@ -726,7 +724,7 @@ public class Library extends Application {
 		TextField avgK2 = new TextField();
 		
 		box3.getChildren().addAll(avgK2Prompt, avgK2);
-		box3.setPrefWidth(600);
+		box3.setPrefWidth(800);
 		box3.setSpacing(50);
 		HBox.setHgrow(avgK2, Priority.ALWAYS);
 		
@@ -736,7 +734,7 @@ public class Library extends Application {
 		TextField probK3_1 = new TextField();
 		
 		box4.getChildren().addAll(probK3_1Prompt,probK3_1);
-		box4.setPrefWidth(600);
+		box4.setPrefWidth(800);
 		box4.setSpacing(50);
 		HBox.setHgrow(probK3_1, Priority.ALWAYS);
 		
@@ -746,7 +744,7 @@ public class Library extends Application {
 		TextField probK3_2 = new TextField();
 		
 		box5.getChildren().addAll(probK3_2Prompt,probK3_2);
-		box5.setPrefWidth(600);
+		box5.setPrefWidth(800);
 		box5.setSpacing(50);
 		HBox.setHgrow(probK3_2, Priority.ALWAYS);
 		
@@ -756,7 +754,7 @@ public class Library extends Application {
 		TextField probPref = new TextField();
 		
 		box6.getChildren().addAll(probPrefPrompt, probPref);
-		box6.setPrefWidth(600);
+		box6.setPrefWidth(800);
 		box6.setSpacing(50);
 		HBox.setHgrow(probPref, Priority.ALWAYS);
 		
@@ -764,7 +762,7 @@ public class Library extends Application {
 		Button submitButton = new Button("Submit");
 		
 		box7.getChildren().addAll(submitButton);
-		box7.setPrefWidth(600);
+		box7.setPrefWidth(800);
 		HBox.setHgrow(submitButton, Priority.ALWAYS);
 		
 		autogen_input.add(box1, 0, 0);
@@ -778,7 +776,7 @@ public class Library extends Application {
 		Scene scene_auto_generate = new Scene(autogen_input, 800, 800);
 		
 		stage_auto_generate.setHeight(300);
-		stage_auto_generate.setWidth(700);
+		stage_auto_generate.setWidth(1000);
 		stage_auto_generate.setScene(scene_auto_generate);
 		
 		autoGenerationButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -795,10 +793,11 @@ public class Library extends Application {
 					return;
 				};
 				Library.calculateStat();
+				Library.AllocateTeams();
 				stage_select_input.hide();
 				stage_auto_generate.hide();
 				stage_person.show();
-				stage_stat.show();
+//				stage_stat.show();
 			}
 		});
 	}
