@@ -22,16 +22,11 @@ public class Person {
 		this.studentname = new SimpleStringProperty(student_name);
 		this.email = new SimpleStringProperty(email);
 		try {
-			this.mypreference = (Integer.parseInt(my_preference) == 0) ? false : true;
-		} catch (Exception e) {
-			System.out.print("There was an error in parsing preference information for student " + student_name + ". Filling preference with false.\n");
-			this.mypreference = false;
-		}
-		try {
 			this.k1energy = Integer.parseInt(k1_energy);
 			this.k2energy = Integer.parseInt(k2_energy);
 			this.k3tick1 = (Integer.parseInt(k3_tick1) == 0) ? false : true;
 			this.k3tick2 = (Integer.parseInt(k3_tick2) == 0) ? false : true;
+			this.mypreference = (Integer.parseInt(my_preference) == 0) ? false : true;
 		} catch (Exception e) {
 			System.out.print("There was an error in parsing information for student " + student_name + ". Filling information with blanks.\n");
 			System.out.println(e);
@@ -39,6 +34,7 @@ public class Person {
 			this.k2energy = 0;
 			this.k3tick1 = false;
 			this.k3tick2 = false;
+			this.mypreference = false;
 		}
 		this.concerns = new SimpleStringProperty(concerns);
 	}
