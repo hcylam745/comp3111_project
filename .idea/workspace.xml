@@ -5,42 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14e26c99-924e-46bb-9f99-5325cee8d5c3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/StudentInquiry.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library$4.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library_skeleton$Person.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Library_skeleton.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/OutputPerson.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Person.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Statistics.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/main/comp3111_project/Team.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/test/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/StudentInquiry.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sample_names.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/InputTester.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/OutputTester.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/StatisticsTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/main/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/PersonTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/PersonTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATU.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATUInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATUInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

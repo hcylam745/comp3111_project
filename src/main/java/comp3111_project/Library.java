@@ -260,7 +260,7 @@ public class Library extends Application {
 				prefNo--;
 			}
 			String email = Character.toLowerCase(sampleNames.get(i).split(",")[0].charAt(0)) +
-					sampleNames.get(i).split(",")[1].toLowerCase() + "@connect.ust.hk";
+					sampleNames.get(i).split(",")[1].toLowerCase().substring(1) + "@connect.ust.hk";
 			person_data.add(new Person(sampleIDs.get(i), sampleNames.get(i), email, k1Energies.get(i), k2Energies.get(i),
 					k3_1, k3_2, pref, ""));
 		}
@@ -297,6 +297,10 @@ public class Library extends Application {
 	}
 
 	// for process
+
+	/**
+	 * Use ATU Engine to put each student into a team
+	 */
 	public static void AllocateTeams() {
 		if(!canAllocate){
 			return;
@@ -307,9 +311,7 @@ public class Library extends Application {
 			ATU atu = new ATU(person_data);
 
 			teams = new Team[33];
-			//put every person into a team
 			for (int i=0; i<33; i++) {
-//			if(i == 2) break;
 				if(teams[i] == null) {
 					teams[i] = new Team();
 				}
@@ -318,94 +320,15 @@ public class Library extends Application {
 				int x = 150 - p1.get().getK1energy() + p2.get().getK1energy();
 				int y = 150  - p2.get().getK2energy() + p1.get().getK2energy();
 				Optional<Person> p3 = atu.selectK(i,3,x,y);
-//
-				System.out.println("p1 = " + (p1.isEmpty() ? null : p1.get().getK1energy()) + " p2 = " + p1.get().getK2energy() + " address = " + p1);
-				System.out.println("p1 = " + (p2.isEmpty() ? null : p2.get().getK1energy()) + " p2 = " + p2.get().getK2energy()+ " address = " + p2);
-				System.out.println("p1 = " + (p3.isEmpty() ? null : p3.get().getK1energy()) + " p2 = " + p3.get().getK2energy() +" address = " + p3);
-//			if(i == 32){
-//				Optional<Person> p4 = atu.selectK(i,1);
-//				System.out.println("p4 = " + (p4.isEmpty() ? null : p4.get().getK1energy()) + " address = " + p4);
-//				teams[i].addMember(p4.get());
-//			}
-				List<Person> k1Filtered = atu.getK1().stream().filter(p -> p.getTeam() == -1).collect(Collectors.toList());
-				System.out.println("Team = " + i);
-				System.out.println("Person left = " + k1Filtered.size());
-//			for(Person p : atu.getK1()) {
-//				System.out.println("p1 = " + p.getK1energy() + "p2 = " + p.getK2energy() + " teams = " + p.getTeam());
-//			}
-//			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-//			for(Person p : atu.getK2()) {
-//				System.out.println("p1 = " + p.getK1energy() + "p2 = " + p.getK2energy() + " teams = " + p.getTeam());
-//			}
-				System.out.println("#####################################");
 
-
-//			teams[i].addMember(person_data.get(i));
 				teams[i].addMember(p1.get());
 				teams[i].addMember(p2.get());
 				teams[i].addMember(p3.get());
-				if(i == 32){
-					System.out.println("Average k1 " + teams[i].averageK1() + " Average k2 " + teams[i].averageK2() + " Average K1 + K2 = " + teams[i].teamAvg());
-				}
-
-//			person_data.get(i).setTeam(i/3+1);
 			}
-//		System.out.println("Average k1 = " + atu.getAverageK1());
-//		System.out.println(atu.getK1().stream().filter(p -> p.getK1energy() >= atu.getAverageK1()).collect(Collectors.toList()).size());
-			// add team to team table
 			for (int i=0; i<33; i++) {
 				team_table.getItems().add(teams[i]);
 			}
 		});
-////		PlatformImpl.startup(() -> {
-//			team_table = new TableView<>();
-//			teams = new Team[34];
-//			// put every person into a team
-//			for (int i = 0; i < 100; i++) {
-//				if (teams[i / 3] == null) {
-//					teams[i / 3] = new Team();
-//				}
-//				teams[i / 3].addMember(person_data.get(i));
-//				person_data.get(i).setTeam(i / 3 + 1);
-//			}
-//			// add team to team table
-//			for (int i = 0; i < 34; i++) {
-//				team_table.getItems().add(teams[i]);
-//			}
-////		});
-
-
-
-//		teams = new Team[34];
-//		//put every person into a team
-//		for (int i=0; i<100; i++) {
-//			if(teams[i/3] == null) {
-//				teams[i/3] = new Team();
-//			}
-//			teams[i/3].addMember(person_data.get(i));
-//			person_data.get(i).setTeam(i/3+1);
-//		}
-//		// add team to team table
-//		for (int i=0; i<34; i++) {
-//			team_table.getItems().add(teams[i]);
-//		}
-//		for(int i = 0; i < 34; ++i) {
-//			System.out.println("AK1 = " + teams[i].averageK1() + " AK2 = " + teams[i].averageK2() + " AT = " + teams[i].teamAvg());
-//		}
-//		teams = new Team[34];
-//		//put every person into a team
-//		for (int i=0; i<100; i++) {
-//			if(teams[i/3] == null) {
-//				teams[i/3] = new Team();
-//			}
-//			teams[i/3].addMember(person_data.get(i));
-//			person_data.get(i).setTeam(i/3+1);
-//		}
-//		// add team to team table
-//		for (int i=0; i<34; i++) {
-//			team_table.getItems().add(teams[i]);
-//		}
-//
 	}
 
 	public static void main(String[] args) throws Exception {
