@@ -36,4 +36,5 @@ public class Team {
 	public Person getMember(int i) {
 		return teamMembers[i];
 	}
+	public Person[] getTeamMembers() { return teamMembers; }
 }

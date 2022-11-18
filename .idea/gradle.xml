@@ -5,10 +5,17 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="delegatedBuild" value="true" />
+<<<<<<< HEAD
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="11" />
+=======
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="corretto-16" />
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />

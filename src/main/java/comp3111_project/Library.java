@@ -1,29 +1,24 @@
 package comp3111_project;
 
 import com.sun.javafx.application.PlatformImpl;
+import comp3111_project.engine.ATU;
+import comp3111_project.utils.MergeSort;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.io.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -31,42 +26,53 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.opencsv.CSVReader;
-import javafx.scene.control.Button;
 import com.opencsv.exceptions.CsvValidationException;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import java.net.URL;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.StageStyle;
 
-import comp3111_project.Person;
-import javafx.scene.control.Button;
-
-
-
+/**
+ * This class is the main program for the automatic team assigning program, containing the driving code for input, process and output sections.
+ * When running this class, it will display tables/menus using JavaFX to make it easier for the user to input desired numbers. 
+ * It also outputs graphs / show student inquiry service using JavaFX to make it easier for the user to see outputs.
+ * @author Henry
+ * @author Siddarth
+ * @author Patrick
+ */
 
 public class Library extends Application {
 
+	// stat_table has statistics data put into it and is displayed using JavaFX.
 	private TableView<Statistics> stat_table = new TableView<Statistics>();
-	private TableView<Person> person_table = new TableView<Person>();
+	// person_table has data of all the students put into it and is displayed using JavaFX.
+	private static TableView<Person> person_table = new TableView<Person>();
+	// autogen_input is used to format the auto generation input scene.
 	private static GridPane autogen_input = new GridPane();
+
 	private static Team teams[];
-	
+
 	public static TableView<Team> team_table;
-
+	// stat_data is used to store the data from the processed statistics.
 	private final static ObservableList<Statistics> stat_data = FXCollections.observableArrayList();
-
-
+	// person_data is used to store the data from the csv student input / auto generated input.
 	private final static ObservableList<Person> person_data = FXCollections.observableArrayList();
 
+	private static Boolean canAllocate = true;
+
+	/**
+	 * This function uses person_data to calculate what stat_data would be.
+	 * It then inserts the values into stat_data.
+	 * @author Henry
+	 */
 	public static void calculateStat() {
 		Integer totalCount = 0;
 		Double k1Avg = 0.0;
@@ -78,6 +84,7 @@ public class Library extends Application {
 		Integer k3Tick1 = 0;
 		Integer k3Tick2 = 0;
 		Integer Preference = 0;
+
 		for (int i = 0; i < person_data.size(); i++) {
 			totalCount++;
 			Integer k1_temp = person_data.get(i).getK1energy();
@@ -107,17 +114,30 @@ public class Library extends Application {
 			}
 		}
 		stat_data.add(new Statistics("Total Number of Students", String.valueOf(totalCount)));
-		stat_data.add(new Statistics("K1_Energy(Average, Min, Max)", "(" + String.format("%.2f",k1Avg) + ", " + 
-		String.valueOf(k1Min) + ", " + String.valueOf(k1Max) + ")"));
-		stat_data.add(new Statistics("K2_Energy(Average, Min, Max)", "(" + String.format("%.2f",k2Avg) + ", " + 
-		String.valueOf(k2Min) + ", " + String.valueOf(k2Max) + ")"));
+		stat_data.add(new Statistics("K1_Energy(Average, Min, Max)", "(" + String.format("%.2f",k1Avg) + ", " +
+				String.valueOf(k1Min) + ", " + String.valueOf(k1Max) + ")"));
+		stat_data.add(new Statistics("K2_Energy(Average, Min, Max)", "(" + String.format("%.2f",k2Avg) + ", " +
+				String.valueOf(k2Min) + ", " + String.valueOf(k2Max) + ")"));
 		stat_data.add(new Statistics("K3_Tick1 = 1", String.valueOf(k3Tick1)));
 		stat_data.add(new Statistics("K3_Tick2 = 1", String.valueOf(k3Tick2)));
 		stat_data.add(new Statistics("My_Preference = 1", String.valueOf(Preference)));
 	}
-	
+
+	/**
+	 * This does the work of parsing and displaying the form for the user to submit number inputs into the auto generating input.
+	 * It also tries to parse the information, and if the inputted information is not valid, then it will stop the function, and return false.
+	 * Returns a boolean that states whether or not the auto generation worked - it will be false when the input numbers are wrong, or if the input cannot be parsed into integers.
+	 * @param studentNo this is the text input field that the user filled in during auto generation for number of students.
+	 * @param avgK1 this is the text input field that the user filled in during auto generation for the average K1 value.
+	 * @param avgK2 this is the text input field that the user filled in during auto generation for the average k2 value.
+	 * @param probK3_1 this is the text input field that the user filled in during auto generation for the probability of k3 tick 1 being true.
+	 * @param probK3_2 this is the text input field that the user filled in during auto generation for the probability of k3 tick 2 being true.
+	 * @param probPref this is the text input field that the user filled in during auto generation for the probability of my preference being true.
+	 * @return returns true or false depending on whether the function ran properly
+	 * @author Henry
+	 */
 	public static Boolean submitAutogen(TextField studentNo, TextField avgK1, TextField avgK2,
-			TextField probK3_1, TextField probK3_2, TextField probPref) {
+										TextField probK3_1, TextField probK3_2, TextField probPref) {
 		// get text from the textfields & attempt to parse, pass error if cannot parse.
 		Integer studentNumberNo;
 		Integer averageK1No;
@@ -132,7 +152,7 @@ public class Library extends Application {
 			probabilityK3_1No = Integer.parseInt(probK3_1.getText());
 			probabilityK3_2No = Integer.parseInt(probK3_2.getText());
 			probabilityPrefNo = Integer.parseInt(probPref.getText());
-			
+
 		} catch (Exception e) {
 			HBox box8 = new HBox();
 			Text errorPrompt = new Text();
@@ -143,7 +163,7 @@ public class Library extends Application {
 		}
 		// checks to make sure the percentages inputted are in range of 0 to 100.
 		if (averageK1No > 100 || averageK1No < 0 || averageK2No > 100 || averageK2No < 2 || probabilityK3_1No > 100 ||
-				probabilityK3_1No < 0 || probabilityK3_2No > 100 || probabilityK3_2No < 0 || probabilityPrefNo > 100 || 
+				probabilityK3_1No < 0 || probabilityK3_2No > 100 || probabilityK3_2No < 0 || probabilityPrefNo > 100 ||
 				probabilityPrefNo < 0) {
 			HBox box8 = new HBox();
 			Text errorPrompt = new Text();
@@ -158,7 +178,7 @@ public class Library extends Application {
 		} else if (studentNumberNo < 200) {
 			studentNumberNo = 200;
 		}
-		
+
 		//generate a list of sample names from sample_names csv and make the size according to studentNumberNo
 		ArrayList<String> firstNames = new ArrayList<String>();
 		ArrayList<String> lastNames = new ArrayList<String>();
@@ -190,12 +210,12 @@ public class Library extends Application {
 				counter++;
 			}
 		}
-		
+
 		//generate arraylist of size studentnumberno that has unique student ids.
 		ArrayList<String> sampleIDs = new ArrayList<String>();
-		Integer id = Integer.parseInt(String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
-				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
-				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) + 
+		Integer id = Integer.parseInt(String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) +
+				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) +
+				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)) +
 				String.valueOf((int)(Math.random() * 10)) + String.valueOf((int)(Math.random() * 10)));
 		// to make sure that the ranomly generated ID will never go over 99999999
 		if (id >= 90000000) {
@@ -205,7 +225,7 @@ public class Library extends Application {
 			sampleIDs.add(String.valueOf(id));
 			id += (int)Math.round(Math.random() * 1000) + 1;
 		}
-		
+
 		//generate array of k1 and k2 energy per student.
 		//
 		// k1temp and k2temp randomly generate a number from 0 - 100, then it takes average k1/k2 inputted by the user, and
@@ -248,7 +268,7 @@ public class Library extends Application {
 			k1Energies.add(String.valueOf(averageK1No));
 			k2Energies.add(String.valueOf(averageK2No));
 		}
-		
+
 		//all inputs have been parsed, now generate dataset.
 		Integer k3_1No = (int)Math.round(probabilityK3_1No / 100.0 * studentNumberNo);
 		Integer k3_2No = (int)Math.round(probabilityK3_2No / 100.0 * studentNumberNo);
@@ -269,14 +289,24 @@ public class Library extends Application {
 				pref = "1";
 				prefNo--;
 			}
-			String email = Character.toLowerCase(sampleNames.get(i).split(",")[0].charAt(0)) + 
-					sampleNames.get(i).split(",")[1].toLowerCase() + "@connect.ust.hk";
-			person_data.add(new Person(sampleIDs.get(i), sampleNames.get(i), email, k1Energies.get(i), k2Energies.get(i), 
+			String email = Character.toLowerCase(sampleNames.get(i).split(",")[0].charAt(0)) +
+					sampleNames.get(i).split(",")[1].toLowerCase().substring(1) + "@connect.ust.hk";
+			person_data.add(new Person(sampleIDs.get(i), sampleNames.get(i), email, k1Energies.get(i), k2Energies.get(i),
 					k3_1, k3_2, pref, ""));
 		}
 		return true;
 	}
-	
+
+	/**
+	 * This function takes the csv file from the input, and reads it using csvReader.
+	 * It then puts the input into person_data as a new person.
+	 * If anything is empty as the input, and that empty cell needs to be parsed into an integer, it will default to 0.
+	 * @param csvFile string input of the path to the csv file that will be read by the system.
+	 * @throws IOException throws an error when the inputted file path is incorrect.
+	 * @throws CsvValidationException throws an error when the line input from the csv is invalid.
+	 * @author Skeleton Code
+	 * @author Henry
+	 */
 	public static void read(String csvFile) throws IOException, CsvValidationException {
 		System.out.println("Hello inside");
 		int counter = 0;
@@ -290,7 +320,7 @@ public class Library extends Application {
 				}
 				for (int i = 0; i < tempArr.length; i++) {
 					// i inbetween 3 and 7 inclusive are the inputs that are parsed into integers and used as variables for the person class, so if null input, then default to 0.
-					if (tempArr[i] == "" && i >= 3 && i <= 7) {
+					if (tempArr[i].equals("") && i >= 3 && i <= 7) {
 						tempArr[i] = "0";
 					}
 				}
@@ -301,27 +331,60 @@ public class Library extends Application {
 		}
 	}
 
+	/**
+	 * This runs the read function using the csvFile string in the function.
+	 * @throws Exception this throws an exception since read can also throw an exception.
+	 * @author Skeleton Code
+	 */
 	public static void readCsv() throws Exception {
 		String csvFile = "src/main/resources/data.CSV";
 		Library.read(csvFile);
 	}
 
 	// for process
+
+	/**
+	 * Use ATU Engine to put each student into a team
+	 */
 	public static void AllocateTeams() {
-		PlatformImpl.startup(() -> {
+		if(!canAllocate){
+			return;
+		}
+		canAllocate = false;
+		Platform.runLater(() -> {
 			team_table = new TableView<>();
-			teams = new Team[34];
-			// put every person into a team
-			for (int i = 0; i < 100; i++) {
-				if (teams[i / 3] == null) {
-					teams[i / 3] = new Team();
+			ATU atu = new ATU(person_data);
+
+			teams = new Team[33];
+			for (int i=0; i<33; i++) {
+				if(teams[i] == null) {
+					teams[i] = new Team();
 				}
-				teams[i / 3].addMember(person_data.get(i));
-				person_data.get(i).setTeam(i / 3 + 1);
+				Optional<Person> p1 = atu.selectK(i,1);
+				Optional<Person> p2 = atu.selectK(i,2);
+				int x = 150 - p1.get().getK1energy() + p2.get().getK1energy();
+				int y = 150  - p2.get().getK2energy() + p1.get().getK2energy();
+				Optional<Person> p3 = atu.selectK(i,3,x,y);
+
+				teams[i].addMember(p1.get());
+				teams[i].addMember(p2.get());
+				teams[i].addMember(p3.get());
 			}
-			// add team to team table
-			for (int i = 0; i < 34; i++) {
+			// Manual fix for 100 people
+			person_table.getItems().stream().filter(p -> p.getTeam() == -1 ).forEach(p -> teams[32].addMember(p));
+			for (int i=0; i<33; i++) {
 				team_table.getItems().add(teams[i]);
+				if(teams[i].getNumberOfMembers() == 4) {
+					System.out.println("There is a team of 4");
+				}
+				if(i == 14){
+					for (int j=0; j<3; j++) {
+						System.out.println(teams[i].getMember(j).getStudentname());
+					}
+					System.out.println(teams[i].averageK1());
+					System.out.println(teams[i].averageK2());
+				}
+				// System.out.println("The size of team i is " + teams[i].getNumberOfMembers());
 			}
 		});
 	}
@@ -331,29 +394,36 @@ public class Library extends Application {
 		System.out.println("Hello");
 		System.out.println("Finish allocation");
 		launch(args);
-	
+
 	}
-	
+
 	@Override
 	public void start(Stage stage_stat) throws Exception{
-		
+
+		/**
+		 * This section sets the stage and the scene for the first window that pops up.
+		 * It has two buttons one for Read CSV and Auto-Generate.
+		 * Depending on the selection of Read CSV or Auto-Generate, the output of the system will be different.
+		 */
 		Stage stage_select_input = new Stage();
 		Scene scene_select_input = new Scene(new Group());
 		stage_select_input.setTitle("Select Input Style");
 		stage_select_input.setWidth(200);
 		stage_select_input.setHeight(200);
-		
+
 		Button csvReadButton = new Button("Read CSV");
 		Button autoGenerationButton = new Button("Auto-Generate");
-		
+
 		final VBox vbox_input = new VBox();
 		vbox_input.getChildren().addAll(csvReadButton, autoGenerationButton);
-		
+
 		((Group) scene_select_input.getRoot()).getChildren().addAll(vbox_input);
-		
+
 		stage_select_input.setScene(scene_select_input);
 		stage_select_input.show();
-	
+
+
+
 		Scene scene_stat = new Scene(new Group());
 		stage_stat.setTitle("Table of students' personal data");
 		stage_stat.setWidth(450);
@@ -378,7 +448,7 @@ public class Library extends Application {
 				}
 			}
 		});
-		
+
 		TableColumn entry_column = new TableColumn("Entry");
 		entry_column.setMinWidth(100);
 		entry_column.setCellValueFactory(new PropertyValueFactory<Statistics, String>("entry"));
@@ -409,6 +479,10 @@ public class Library extends Application {
 
 		person_table.setEditable(true);
 
+
+		/**
+		 * This sets up the columns for the person table that displays information of all students.
+		 */
 		TableColumn rowindex_column2 = new TableColumn("Row_Index");
 		rowindex_column2.setMinWidth(100);
 		// this adds a counter for row_index
@@ -423,7 +497,7 @@ public class Library extends Application {
 				}
 			}
 		});
-		
+
 		TableColumn studentid_column = new TableColumn("Student_ID");
 		studentid_column.setMinWidth(100);
 		studentid_column.setCellValueFactory(new PropertyValueFactory<Statistics, String>("studentid"));
@@ -513,7 +587,7 @@ public class Library extends Application {
 					person_table.scrollTo(targetPerson);
 					System.out.println(targetPerson.getTeam());
 					OutputPerson target = new OutputPerson(targetPerson.getStudentid(), targetPerson.getStudentname(),
-							targetPerson.getTeam(), teams[targetPerson.getTeam() - 1]);
+							targetPerson.getTeam(), teams[targetPerson.getTeam()]);
 					// make a new table to show the person
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudentInquiry.fxml"));
 					// fxmlLoader.setLocation(FXMLDocumentController.class.getResource("src/main/resources/StudentInquiry.fxml"));
@@ -553,14 +627,16 @@ public class Library extends Application {
 					k1_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk1())));
 					k2_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk2())));
 
-					int size = teams[target.getTeamId() - 1].getNumberOfMembers();
+					int size = teams[target.getTeamId()].getNumberOfMembers();
+					System.out.println("The size of the team is " + size);
+					System.out.println("The team number is "+ target.getTeamId());
 					int k = 0;
 					for (int i = 0; i < size; i++) {
-						if (teams[target.getTeamId() - 1].getMember(i).getStudentid().equals(target.getStudentid())) {
+						if (teams[target.getTeamId()].getMember(i).getStudentid().equals(target.getStudentid()) || teams[target.getTeamId()].getMember(i).getStudentname().equals(target.getStudentname())) {
 							continue;
 						}
 						Label team_mate = (Label) root1.lookup("#teammate_" + (k + 1));
-						team_mate.setText(teams[target.getTeamId() - 1].getMember(i).getStudentname());
+						team_mate.setText(teams[target.getTeamId()].getMember(i).getStudentname());
 						k++;
 					}
 
@@ -674,7 +750,8 @@ public class Library extends Application {
 			}
 		});
 
-		
+		// handles what happens when the read csv button works, tries to run the readcsv function, then calculates the statistics, allocates the teams, 
+		// then displays the information the stage_person table.
 		csvReadButton.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -691,80 +768,82 @@ public class Library extends Application {
 //				stage_stat.show();
 			}
 		});
-		
+
+		// auto_generate stage is a window that allows the user to input numbers for the desired auto generation outputs.
+		// this code sets up the formatting of the window that allows user to do auto generation inputs.
 		Stage stage_auto_generate = new Stage();
 		stage_auto_generate.setTitle("Input your desired values for Auto-Generation");
 		//gridpane and hbox used to line up text and textboxes horizontally, as well as to put them in rows.
-		//GridPane root = new GridPane();
 		autogen_input.setAlignment(Pos.CENTER);
-		
+
 		HBox box1 = new HBox();
 		Text studentNoPrompt = new Text();
 		studentNoPrompt.setText("Input Number of Students (Min 200, Max 500)");
 		TextField studentNo = new TextField();
-		
+
 		box1.getChildren().addAll(studentNoPrompt,studentNo);
 		box1.setPrefWidth(800);
 		box1.setSpacing(50);
 		HBox.setHgrow(studentNo, Priority.ALWAYS);
-		
+
 		HBox box2 = new HBox();
 		Text avgK1Prompt = new Text();
 		avgK1Prompt.setText("Input Average K1 Energy per Class (Please input a percentage without the % sign)");
 		TextField avgK1 = new TextField();
-		
+
 		box2.getChildren().addAll(avgK1Prompt,avgK1);
 		box2.setPrefWidth(800);
 		box2.setSpacing(50);
 		HBox.setHgrow(avgK1, Priority.ALWAYS);
-		
+
 		HBox box3 = new HBox();
 		Text avgK2Prompt = new Text();
 		avgK2Prompt.setText("Input Average K2 Energy per Class (Please input a percentage without the % sign)");
 		TextField avgK2 = new TextField();
-		
+
 		box3.getChildren().addAll(avgK2Prompt, avgK2);
 		box3.setPrefWidth(800);
 		box3.setSpacing(50);
 		HBox.setHgrow(avgK2, Priority.ALWAYS);
-		
+
 		HBox box4 = new HBox();
 		Text probK3_1Prompt = new Text();
 		probK3_1Prompt.setText("Input Probablility that K3_Tick1 is True (Please input a percentage without the % sign)");
 		TextField probK3_1 = new TextField();
-		
+
 		box4.getChildren().addAll(probK3_1Prompt,probK3_1);
 		box4.setPrefWidth(800);
 		box4.setSpacing(50);
 		HBox.setHgrow(probK3_1, Priority.ALWAYS);
-		
+
 		HBox box5 = new HBox();
 		Text probK3_2Prompt = new Text();
 		probK3_2Prompt.setText("Input Probablility that K3_Tick2 is True (Please input a percentage without the % sign)");
 		TextField probK3_2 = new TextField();
-		
+
 		box5.getChildren().addAll(probK3_2Prompt,probK3_2);
 		box5.setPrefWidth(800);
 		box5.setSpacing(50);
 		HBox.setHgrow(probK3_2, Priority.ALWAYS);
-		
+
 		HBox box6 = new HBox();
 		Text probPrefPrompt = new Text();
 		probPrefPrompt.setText("Input Probablility that My_Preference is True (Please input a percentage without the % sign)");
 		TextField probPref = new TextField();
-		
+
 		box6.getChildren().addAll(probPrefPrompt, probPref);
 		box6.setPrefWidth(800);
 		box6.setSpacing(50);
 		HBox.setHgrow(probPref, Priority.ALWAYS);
-		
+
 		HBox box7 = new HBox();
 		Button submitButton = new Button("Submit");
-		
+
 		box7.getChildren().addAll(submitButton);
 		box7.setPrefWidth(800);
 		HBox.setHgrow(submitButton, Priority.ALWAYS);
-		
+
+		// a variable within the class rather than a variable local to the function is used because new information needs to be added to the scene if the user performs an incorrect input.
 		autogen_input.add(box1, 0, 0);
 		autogen_input.add(box2, 0, 1);
 		autogen_input.add(box3, 0, 2);
@@ -772,33 +851,41 @@ public class Library extends Application {
 		autogen_input.add(box5, 0, 4);
 		autogen_input.add(box6, 0, 5);
 		autogen_input.add(box7, 0, 6);
-		
+
 		Scene scene_auto_generate = new Scene(autogen_input, 800, 800);
-		
+
 		stage_auto_generate.setHeight(300);
 		stage_auto_generate.setWidth(1000);
 		stage_auto_generate.setScene(scene_auto_generate);
-		
+
+		// this displays the auto generation window.
 		autoGenerationButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				stage_auto_generate.show();
 			}
 		});
-		
+
+		// this is the submit button within the auto generation window, passes all the information gathered into submitAutogen function.
+		// if the return is false, that means some part of the input is invalid, so the function must end itself before anything else is run.
+		// after running submitAutogen, it calculates teams and allocates teams, then shows the information of the students generated.
 		submitButton.setOnAction(new EventHandler<ActionEvent>() {
+
 			@Override
 			public void handle(ActionEvent event) {
-				if (submitAutogen(studentNo, avgK1, avgK2, probK3_1, probK3_2, probPref) == false) {
-					return;
-				};
-				Library.calculateStat();
-				Library.AllocateTeams();
-				stage_select_input.hide();
-				stage_auto_generate.hide();
-				stage_person.show();
+					if (submitAutogen(studentNo, avgK1, avgK2, probK3_1, probK3_2, probPref) == false) {
+						return;
+					};
+					Library.calculateStat();
+					Library.AllocateTeams();
+					stage_select_input.hide();
+					stage_auto_generate.hide();
+					stage_person.show();
+
 //				stage_stat.show();
 			}
 		});
+
+
 	}
 }

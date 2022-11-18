@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14e26c99-924e-46bb-9f99-5325cee8d5c3" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -26,6 +27,9 @@
       <change beforePath="$PROJECT_DIR$/bin/test/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,15 +73,36 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/home/siddarth/COMP 3111/javafx-sdk-19/lib",
-    "project.structure.last.edited": "Libraries",
+    "last_opened_file_path": "/home/patrick/Documents/HKUST/Fall2022/COMP3111/Project/dev_sid/comp3111_project",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.4218391",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
+<<<<<<< HEAD
   <component name="RunManager" selected="JUnit.OutputTester">
     <configuration name="comp3111_project [test]" type="GradleRunConfiguration" factoryName="Gradle">
+=======
+  <component name="RunManager" selected="Gradle.OutputTester.TestLibrary">
+    <configuration name="Library" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="comp3111_project.Library" />
+      <module name="comp3111_project.main" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;$USER_HOME$/COMP 3111/javafx-sdk-19/lib&quot; --add-modules javafx.base,javafx.graphics,javafx.controls,javafx.fxml --add-reads javafx.base=ALL-UNNAMED --add-reads javafx.graphics=ALL-UNNAMED " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="comp3111_project.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InputTester.test1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -88,7 +113,13 @@
         </option>
         <option name="taskNames">
           <list>
+<<<<<<< HEAD
             <option value="test" />
+=======
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;comp3111_project.InputTester.test1&quot;" />
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
           </list>
         </option>
         <option name="vmOptions" value="--module-path &quot;$USER_HOME$/COMP 3111/javafx-sdk-19/lib&quot; --add-modules javafx.base,javafx.graphics,javafx.controls,javafx.fxml --add-reads javafx.base=ALL-UNNAMED --add-reads javafx.graphics=ALL-UNNAMED " />
@@ -106,6 +137,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+<<<<<<< HEAD
     <configuration name="InputTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="comp3111_project.test" />
       <extension name="coverage">
@@ -120,6 +152,30 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+=======
+    <configuration name="Tests in 'comp3111_project' (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;comp3111_project.*&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
     </configuration>
     <configuration name="OutputTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="comp3111_project.test" />
@@ -168,6 +224,7 @@
       </method>
     </configuration>
     <list>
+<<<<<<< HEAD
       <item itemvalue="Gradle.comp3111_project [test]" />
       <item itemvalue="JUnit.All in comp3111_project" />
       <item itemvalue="JUnit.InputTester" />
@@ -182,6 +239,21 @@
         <item itemvalue="JUnit.PersonTester" />
         <item itemvalue="JUnit.All in comp3111_project" />
         <item itemvalue="TestNG.comp3111_project" />
+=======
+      <item itemvalue="Application.Library" />
+      <item itemvalue="Gradle.InputTester.test1" />
+      <item itemvalue="Gradle.Tests in 'comp3111_project' (1)" />
+      <item itemvalue="Gradle.OutputTester.TestLibrary" />
+      <item itemvalue="Gradle.Tests in 'comp3111_project'" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.OutputTester.TestLibrary" />
+        <item itemvalue="Gradle.Tests in 'comp3111_project' (1)" />
+        <item itemvalue="Gradle.InputTester.test1" />
+        <item itemvalue="Gradle.Tests in 'comp3111_project'" />
+        <item itemvalue="Application.Library" />
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
       </list>
     </recent_temporary>
   </component>
@@ -212,6 +284,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/comp3111_project$OutputTester_TestLibrary.ic" NAME="OutputTester.TestLibrary Coverage Results" MODIFIED="1668526065096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$PersonTester.ic" NAME="PersonTester Coverage Results" MODIFIED="1668609263948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>comp3111_project.*</FILTER>
@@ -224,5 +297,12 @@
       <FILTER>comp3111_project.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/comp3111_project$All_in_comp3111_project.ic" NAME="All in comp3111_project Coverage Results" MODIFIED="1668609304019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+=======
+    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project_.ic" NAME="Tests in 'comp3111_project' Coverage Results" MODIFIED="1668613924148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$OutputTester_TestLibrary.ic" NAME="OutputTester.TestLibrary Coverage Results" MODIFIED="1668614927562" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$PersonTester.ic" NAME="PersonTester Coverage Results" MODIFIED="1668510648025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project___1_.ic" NAME="Tests in 'comp3111_project' (1) Coverage Results" MODIFIED="1668614866097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$OutputTester.ic" NAME="OutputTester Coverage Results" MODIFIED="1668534345348" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+>>>>>>> af73e791ba3fbfd84ed5ae0aaf33b64ddf4f5a25
   </component>
 </project>
