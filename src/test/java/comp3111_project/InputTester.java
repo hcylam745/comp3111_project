@@ -5,18 +5,22 @@ import org.junit.Test;
 
 import javafx.scene.control.TextField;
 
+
+/**
+ * This class is for junit to run tests on.
+ * This specifically tests the input section of the project.
+ * @author Henry
+ */
 public class InputTester {
 	
-	//Library test;
 
-	
+	// no setup required.
 	@Before
 	public void setup() throws Exception {
-		//test = new Library();
-		//JFXPanel fxPanel = new JFXPanel();
 
 	}
 	
+	// this tests the main autogen function, using correct inputs, as well as the main function.
 	@Test
 	public void test1() throws Exception {
 		Library.main(null);
@@ -37,12 +41,14 @@ public class InputTester {
 		Library.calculateStat();
 	}
 	
+	// this tests what happens when the user clicks the read csv button
 	@Test
 	public void test2() throws Exception {
 		Library.readCsv();
 		Library.calculateStat();
 	}
 	
+	// this tests what happens when the user puts incorrect inputs into the autogen function.
 	@Test
 	public void test3() throws Exception {
 		TextField studentNo = new TextField();
@@ -62,6 +68,7 @@ public class InputTester {
 		Library.calculateStat();
 	}
 	
+	// this tests what happens when the user puts values that are too large in the autogen function.
 	@Test
 	public void test4() throws Exception {
 		TextField studentNo = new TextField();
@@ -81,6 +88,7 @@ public class InputTester {
 		Library.calculateStat();
 	}
 	
+	// this tests what happens when the user puts values that are too small (negative) in the autogen function.
 	@Test
 	public void test5() throws Exception {
 		TextField studentNo = new TextField();
