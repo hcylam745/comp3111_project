@@ -40,22 +40,39 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+/**
+ * This class is the main program for the automatic team assigning program, containing the driving code for input, process and output sections.
+ * When running this class, it will display tables/menus using JavaFX to make it easier for the user to input desired numbers. 
+ * It also outputs graphs / show student inquiry service using JavaFX to make it easier for the user to see outputs.
+ * @author Henry
+ * @author Siddarth
+ * @author Patrick
+ */
+
 public class Library extends Application {
 
+	// stat_table has statistics data put into it and is displayed using JavaFX.
 	private TableView<Statistics> stat_table = new TableView<Statistics>();
+	// person_table has data of all the students put into it and is displayed using JavaFX.
 	private TableView<Person> person_table = new TableView<Person>();
+	// autogen_input is used to format the auto generation input scene.
 	private static GridPane autogen_input = new GridPane();
+
 	private static Team teams[];
 
 	public static TableView<Team> team_table;
-
+	// stat_data is used to store the data from the processed statistics.
 	private final static ObservableList<Statistics> stat_data = FXCollections.observableArrayList();
-
-
+	// person_data is used to store the data from the csv student input / auto generated input.
 	private final static ObservableList<Person> person_data = FXCollections.observableArrayList();
 
 	private static Boolean canAllocate = true;
 
+	/**
+	 * This function uses person_data to calculate what stat_data would be.
+	 * It then inserts the values into stat_data.
+	 * @author Henry
+	 */
 	public static void calculateStat() {
 		Integer totalCount = 0;
 		Double k1Avg = 0.0;
@@ -106,6 +123,19 @@ public class Library extends Application {
 		stat_data.add(new Statistics("My_Preference = 1", String.valueOf(Preference)));
 	}
 
+	/**
+	 * This does the work of parsing and displaying the form for the user to submit number inputs into the auto generating input.
+	 * It also tries to parse the information, and if the inputted information is not valid, then it will stop the function, and return false.
+	 * Returns a boolean that states whether or not the auto generation worked - it will be false when the input numbers are wrong, or if the input cannot be parsed into integers.
+	 * @param studentNo this is the text input field that the user filled in during auto generation for number of students.
+	 * @param avgK1 this is the text input field that the user filled in during auto generation for the average K1 value.
+	 * @param avgK2 this is the text input field that the user filled in during auto generation for the average k2 value.
+	 * @param probK3_1 this is the text input field that the user filled in during auto generation for the probability of k3 tick 1 being true.
+	 * @param probK3_2 this is the text input field that the user filled in during auto generation for the probability of k3 tick 2 being true.
+	 * @param probPref this is the text input field that the user filled in during auto generation for the probability of my preference being true.
+	 * @return returns true or false depending on whether the function ran properly
+	 * @author Henry
+	 */
 	public static Boolean submitAutogen(TextField studentNo, TextField avgK1, TextField avgK2,
 										TextField probK3_1, TextField probK3_2, TextField probPref) {
 		// get text from the textfields & attempt to parse, pass error if cannot parse.
@@ -267,6 +297,16 @@ public class Library extends Application {
 		return true;
 	}
 
+	/**
+	 * This function takes the csv file from the input, and reads it using csvReader.
+	 * It then puts the input into person_data as a new person.
+	 * If anything is empty as the input, and that empty cell needs to be parsed into an integer, it will default to 0.
+	 * @param csvFile string input of the path to the csv file that will be read by the system.
+	 * @throws IOException throws an error when the inputted file path is incorrect.
+	 * @throws CsvValidationException throws an error when the line input from the csv is invalid.
+	 * @author Skeleton Code
+	 * @author Henry
+	 */
 	public static void read(String csvFile) throws IOException, CsvValidationException {
 		System.out.println("Hello inside");
 		int counter = 0;
@@ -291,6 +331,11 @@ public class Library extends Application {
 		}
 	}
 
+	/**
+	 * This runs the read function using the csvFile string in the function.
+	 * @throws Exception this throws an exception since read can also throw an exception.
+	 * @author Skeleton Code
+	 */
 	public static void readCsv() throws Exception {
 		String csvFile = "src/main/resources/data.CSV";
 		Library.read(csvFile);
@@ -419,6 +464,11 @@ public class Library extends Application {
 	@Override
 	public void start(Stage stage_stat) throws Exception{
 
+		/**
+		 * This section sets the stage and the scene for the first window that pops up.
+		 * It has two buttons one for Read CSV and Auto-Generate.
+		 * Depending on the selection of Read CSV or Auto-Generate, the output of the system will be different.
+		 */
 		Stage stage_select_input = new Stage();
 		Scene scene_select_input = new Scene(new Group());
 		stage_select_input.setTitle("Select Input Style");
@@ -435,6 +485,8 @@ public class Library extends Application {
 
 		stage_select_input.setScene(scene_select_input);
 		stage_select_input.show();
+
+
 
 		Scene scene_stat = new Scene(new Group());
 		stage_stat.setTitle("Table of students' personal data");
@@ -491,6 +543,10 @@ public class Library extends Application {
 
 		person_table.setEditable(true);
 
+
+		/**
+		 * This sets up the columns for the person table that displays information of all students.
+		 */
 		TableColumn rowindex_column2 = new TableColumn("Row_Index");
 		rowindex_column2.setMinWidth(100);
 		// this adds a counter for row_index
@@ -756,7 +812,8 @@ public class Library extends Application {
 			}
 		});
 
-
+		// handles what happens when the read csv button works, tries to run the readcsv function, then calculates the statistics, allocates the teams, 
+		// then displays the information the stage_person table.
 		csvReadButton.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -774,10 +831,11 @@ public class Library extends Application {
 			}
 		});
 
+		// auto_generate stage is a window that allows the user to input numbers for the desired auto generation outputs.
+		// this code sets up the formatting of the window that allows user to do auto generation inputs.
 		Stage stage_auto_generate = new Stage();
 		stage_auto_generate.setTitle("Input your desired values for Auto-Generation");
 		//gridpane and hbox used to line up text and textboxes horizontally, as well as to put them in rows.
-		//GridPane root = new GridPane();
 		autogen_input.setAlignment(Pos.CENTER);
 
 		HBox box1 = new HBox();
@@ -847,6 +905,7 @@ public class Library extends Application {
 		box7.setPrefWidth(800);
 		HBox.setHgrow(submitButton, Priority.ALWAYS);
 
+		// a variable within the class rather than a variable local to the function is used because new information needs to be added to the scene if the user performs an incorrect input.
 		autogen_input.add(box1, 0, 0);
 		autogen_input.add(box2, 0, 1);
 		autogen_input.add(box3, 0, 2);
@@ -861,28 +920,33 @@ public class Library extends Application {
 		stage_auto_generate.setWidth(1000);
 		stage_auto_generate.setScene(scene_auto_generate);
 
+		// this displays the auto generation window.
 		autoGenerationButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				stage_auto_generate.show();
 			}
 		});
-			submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
-				@Override
-				public void handle(ActionEvent event) {
-						if (submitAutogen(studentNo, avgK1, avgK2, probK3_1, probK3_2, probPref) == false) {
-							return;
-						};
-						Library.calculateStat();
-						Library.AllocateTeams();
-						stage_select_input.hide();
-						stage_auto_generate.hide();
-						stage_person.show();
+		// this is the submit button within the auto generation window, passes all the information gathered into submitAutogen function.
+		// if the return is false, that means some part of the input is invalid, so the function must end itself before anything else is run.
+		// after running submitAutogen, it calculates teams and allocates teams, then shows the information of the students generated.
+		submitButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+					if (submitAutogen(studentNo, avgK1, avgK2, probK3_1, probK3_2, probPref) == false) {
+						return;
+					};
+					Library.calculateStat();
+					Library.AllocateTeams();
+					stage_select_input.hide();
+					stage_auto_generate.hide();
+					stage_person.show();
 
 //				stage_stat.show();
-				}
-			});
+			}
+		});
 
 
 	}
