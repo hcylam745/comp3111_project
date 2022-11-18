@@ -13,10 +13,16 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test for process
+ */
 public class ProcessTest {
 
     private final ObservableList<Person> list = FXCollections.observableArrayList();
 
+    /**
+     * Initialize 100 Students
+     */
     @Before
     public void init(){
         for(int i = 0 ; i < 100 ; ++i) {
@@ -28,6 +34,9 @@ public class ProcessTest {
         }
     }
 
+    /**
+     * Make sure the ATU engine split the dataset correctly
+     */
     @Test
     public void TestConstructor() {
         ATU engine = new ATU(list);
@@ -36,6 +45,9 @@ public class ProcessTest {
         assertEquals(engine.getK2().size(), 33);
     }
 
+    /**
+     * Make sure we select the highest k1 for the team 0
+     */
     @Test
     public void TestSelectK1() {
         ATU engine = new ATU(list);
@@ -43,6 +55,9 @@ public class ProcessTest {
         assertEquals(engine.selectK(0,1).orElse(null),engine.getK1().get(0));
     }
 
+    /**
+     * Make sure we select lowest k2 for the team 0
+     */
     @Test
     public void TestSelectK2() {
         ATU engine = new ATU(list);
@@ -50,6 +65,9 @@ public class ProcessTest {
         assertEquals(engine.selectK(0,2).orElse(null),engine.getK2().get(0));
     }
 
+    /**
+     * Make sure there's at least one person with k1 higher than the average k1
+     */
     @Test
     public void TestSelectK3() {
         double averagek1 = list.stream().mapToInt(Person::getK1energy).average().orElse(-1);
