@@ -1,5 +1,8 @@
 package comp3111_project;
 
+/**
+ * This is the class to store Team information
+ */
 public class Team {
 	int NumberOfMembers;
 	Person teamMembers[];

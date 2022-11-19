@@ -54,12 +54,12 @@ public class Library extends Application {
 	// stat_table has statistics data put into it and is displayed using JavaFX.
 	private TableView<Statistics> stat_table = new TableView<Statistics>();
 	// person_table has data of all the students put into it and is displayed using JavaFX.
-	private static TableView<Person> person_table = new TableView<Person>();
+	private TableView<Person> person_table = new TableView<Person>();
 	// autogen_input is used to format the auto generation input scene.
 	private static GridPane autogen_input = new GridPane();
 
 	private static Team teams[];
-
+	// Table to store team information
 	public static TableView<Team> team_table;
 	// stat_data is used to store the data from the processed statistics.
 	private final static ObservableList<Statistics> stat_data = FXCollections.observableArrayList();
@@ -354,41 +354,136 @@ public class Library extends Application {
 		Platform.runLater(() -> {
 			team_table = new TableView<>();
 			ATU atu = new ATU(person_data);
+			int size = person_data.size();
+			double k1Hat = person_data.stream().mapToInt(Person::getK1energy).average().orElse(-1);
+			double k2Hat = person_data.stream().mapToInt(Person::getK2energy).average().orElse(-1);
+			List<Person> k1List = atu.getK1();
+			List<Person> remain = atu.getRemain();
 
-			teams = new Team[33];
-			for (int i=0; i<33; i++) {
-				if(teams[i] == null) {
+			teams = new Team[size / 3];
+			for (int i = 0; i < size / 3; ++i) {
+				Person p = k1List.get(i);
+				if (teams[i] == null) {
 					teams[i] = new Team();
 				}
-				Optional<Person> p1 = atu.selectK(i,1);
-				Optional<Person> p2 = atu.selectK(i,2);
-				int x = 150 - p1.get().getK1energy() + p2.get().getK1energy();
-				int y = 150  - p2.get().getK2energy() + p1.get().getK2energy();
-				Optional<Person> p3 = atu.selectK(i,3,x,y);
-
-				teams[i].addMember(p1.get());
-				teams[i].addMember(p2.get());
-				teams[i].addMember(p3.get());
+				teams[i].addMember(p);
+				p.setTeam(i);
 			}
-			// Manual fix for 100 people
-			person_table.getItems().stream().filter(p -> p.getTeam() == -1 ).forEach(p -> teams[32].addMember(p));
-			for (int i=0; i<33; i++) {
-				team_table.getItems().add(teams[i]);
-				if(teams[i].getNumberOfMembers() == 4) {
-					System.out.println("There is a team of 4");
-				}
-				if(i == 14){
-					for (int j=0; j<3; j++) {
-						System.out.println(teams[i].getMember(j).getStudentname());
+
+			for (int i = 0; i < size / 3; ++i) {
+				Team team = teams[i];
+				Person k1Member = team.getMember(0);
+
+				double k1 = k1Member.getK1energy();
+				double k2 = k1Member.getK2energy();
+
+				double minDist = -1;
+				int minIndex = -1;
+				for (int j = 0; j < size / 3; ++j) {
+					Person remainPerson = remain.get(j);
+					if (remainPerson.getTeam() != -1)
+						continue;
+
+					double remainK1 = remainPerson.getK1energy();
+					double reminaK2 = remainPerson.getK2energy();
+
+					double totalK1Average = (k1 + remainK1) / 2;
+					double totalK2Average = (k2 + reminaK2) / 2;
+
+					double totalDist = Math.sqrt(Math.pow(totalK1Average - k1Hat, 2) + Math.pow(totalK2Average - k2Hat, 2));
+					if ((minDist == -1 && minIndex == -1) || totalDist < minDist) {
+						minIndex = j;
+						minDist = totalDist;
 					}
-					System.out.println(teams[i].averageK1());
-					System.out.println(teams[i].averageK2());
 				}
-				// System.out.println("The size of team i is " + teams[i].getNumberOfMembers());
+
+				Person minPerson = remain.get(minIndex);
+				team.addMember(minPerson);
+				minPerson.setTeam(i);
+			}
+
+			for (int i = 0; i < size / 3; ++i) {
+				Team team = teams[i];
+				Person k1Member = team.getMember(0);
+				Person k2Memeber = team.getMember(1);
+
+				double k1 = (double) (k1Member.getK1energy() + k2Memeber.getK1energy()) / 2;
+				double k2 = (double) (k1Member.getK2energy() + k2Memeber.getK2energy()) / 2;
+
+				double minDist = -1;
+				int minIndex = -1;
+				for (int j = 0; j < size / 3; ++j) {
+					Person remainPerson = remain.get(j);
+					if (remainPerson.getTeam() == -1)
+						continue;
+
+					double remainK1 = remainPerson.getK1energy();
+					double reminaK2 = remainPerson.getK2energy();
+
+					double totalK1Average = (k1 + remainK1) / 2;
+					double totalK2Average = (k2 + reminaK2) / 2;
+
+					double totalDist = Math.sqrt(Math.pow(totalK1Average - k1Hat, 2) + Math.pow(totalK2Average - k2Hat, 2));
+					if ((minDist == -1 && minIndex == -1) || totalDist < minDist) {
+						minIndex = j;
+						minDist = totalDist;
+					}
+				}
+
+				Person minPerson = remain.get(minIndex);
+				team.addMember(minPerson);
+				minPerson.setTeam(i);
+			}
+			Person lastPerson = person_data.stream().filter(p -> p.getTeam() == -1).findFirst().orElse(null);
+			if (lastPerson == null) {
+				team_table.getItems().addAll(teams);
+				return;
+			}
+			int maxIndex = 0;
+			int minIndex = 0;
+			double maxValue = 0;
+			double minValue = 1000;
+			for (int i = 0; i < size / 3; ++i) {
+				double average = teams[i].teamAvg();
+				if (average > maxValue) {
+					maxValue = average;
+					maxIndex = i;
+				}
+				if (average < minValue) {
+					minValue = average;
+					minIndex = i;
+				}
+			}
+			if ((double) (lastPerson.getK1energy() + lastPerson.getK2energy()) / 2 <= (k1Hat + k2Hat) / 2) {
+				teams[maxIndex].addMember(lastPerson);
+			} else {
+				teams[minIndex].addMember(lastPerson);
+			}
+			team_table.getItems().addAll(teams);
+
+			maxIndex = 0;
+			minIndex = 0;
+			maxValue = 0;
+			minValue = 1000;
+			for (int i = 0; i < size / 3; ++i) {
+				double average = teams[i].teamAvg();
+				if (average > maxValue) {
+					maxValue = average;
+					maxIndex = i;
+				}
+				if (average < minValue) {
+					minValue = average;
+					minIndex = i;
+				}
 			}
 		});
 	}
 
+	/**
+	 * Main function
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("Hello");
@@ -397,6 +492,10 @@ public class Library extends Application {
 
 	}
 
+	/**
+	 * This start function is resposible for creating the GUI and setting up the
+	 *
+	 */
 	@Override
 	public void start(Stage stage_stat) throws Exception{
 
@@ -557,6 +656,9 @@ public class Library extends Application {
 		// add search box to the scene
 		vbox_person.getChildren().addAll(searchBox, searchBox2, searchButton, showStatisticsButton);
 		searchButton.setOnAction(new EventHandler<ActionEvent>() {
+			/**
+			 * This method is called when the search button is clicked.
+			 */
 			@Override
 			public void handle(ActionEvent event) {
 				String targetStudentId = searchBox.getText();
@@ -664,6 +766,10 @@ public class Library extends Application {
 
 		// show the stage when showGraphsButton is clicked
 		showGraphsButton.setOnAction(new EventHandler<ActionEvent>() {
+			/**
+			 * This function shows the individual student's energy 
+			 * @param event
+			 */
 			@Override
 			public void handle(ActionEvent event) {
 				// defining the axes
@@ -707,6 +813,10 @@ public class Library extends Application {
 		stage_person.setScene(scene_person);
 		// show the stage when showTeamAvgButton is clicked
 		showTeamAvgButton.setOnAction(new EventHandler<ActionEvent>() {
+			/**
+			 * This will generate the team average energy
+			 * @param event
+			 */
 			@Override
 			public void handle(ActionEvent event) {
 				final NumberAxis teamXAxis = new NumberAxis();
