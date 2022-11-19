@@ -354,24 +354,127 @@ public class Library extends Application {
 		Platform.runLater(() -> {
 			team_table = new TableView<>();
 			ATU atu = new ATU(person_data);
+			int size = person_data.size();
+			double k1Hat = person_data.stream().mapToInt(Person::getK1energy).average().orElse(-1);
+			double k2Hat = person_data.stream().mapToInt(Person::getK2energy).average().orElse(-1);
+			List<Person> k1List = atu.getK1();
+			List<Person> remain = atu.getRemain();
 
-			teams = new Team[33];
-			for (int i=0; i<33; i++) {
-				if(teams[i] == null) {
+			teams = new Team[size / 3];
+			for (int i = 0; i < size / 3; ++i) {
+				Person p = k1List.get(i);
+				if (teams[i] == null) {
 					teams[i] = new Team();
 				}
-				Optional<Person> p1 = atu.selectK(i,1);
-				Optional<Person> p2 = atu.selectK(i,2);
-				int x = 150 - p1.get().getK1energy() + p2.get().getK1energy();
-				int y = 150  - p2.get().getK2energy() + p1.get().getK2energy();
-				Optional<Person> p3 = atu.selectK(i,3,x,y);
-
-				teams[i].addMember(p1.get());
-				teams[i].addMember(p2.get());
-				teams[i].addMember(p3.get());
+				teams[i].addMember(p);
+				p.setTeam(i);
 			}
-			for (int i=0; i<33; i++) {
-				team_table.getItems().add(teams[i]);
+
+			for (int i = 0; i < size / 3; ++i) {
+				Team team = teams[i];
+				Person k1Member = team.getMember(0);
+
+				double k1 = k1Member.getK1energy();
+				double k2 = k1Member.getK2energy();
+
+				double minDist = -1;
+				int minIndex = -1;
+				for (int j = 0; j < size / 3; ++j) {
+					Person remainPerson = remain.get(j);
+					if (remainPerson.getTeam() != -1)
+						continue;
+
+					double remainK1 = remainPerson.getK1energy();
+					double reminaK2 = remainPerson.getK2energy();
+
+					double totalK1Average = (k1 + remainK1) / 2;
+					double totalK2Average = (k2 + reminaK2) / 2;
+
+					double totalDist = Math.sqrt(Math.pow(totalK1Average - k1Hat, 2) + Math.pow(totalK2Average - k2Hat, 2));
+					if ((minDist == -1 && minIndex == -1) || totalDist < minDist) {
+						minIndex = j;
+						minDist = totalDist;
+					}
+				}
+
+				Person minPerson = remain.get(minIndex);
+				team.addMember(minPerson);
+				minPerson.setTeam(i);
+			}
+
+			for (int i = 0; i < size / 3; ++i) {
+				Team team = teams[i];
+				Person k1Member = team.getMember(0);
+				Person k2Memeber = team.getMember(1);
+
+				double k1 = (double) (k1Member.getK1energy() + k2Memeber.getK1energy()) / 2;
+				double k2 = (double) (k1Member.getK2energy() + k2Memeber.getK2energy()) / 2;
+
+				double minDist = -1;
+				int minIndex = -1;
+				for (int j = 0; j < size / 3; ++j) {
+					Person remainPerson = remain.get(j);
+					if (remainPerson.getTeam() == -1)
+						continue;
+
+					double remainK1 = remainPerson.getK1energy();
+					double reminaK2 = remainPerson.getK2energy();
+
+					double totalK1Average = (k1 + remainK1) / 2;
+					double totalK2Average = (k2 + reminaK2) / 2;
+
+					double totalDist = Math.sqrt(Math.pow(totalK1Average - k1Hat, 2) + Math.pow(totalK2Average - k2Hat, 2));
+					if ((minDist == -1 && minIndex == -1) || totalDist < minDist) {
+						minIndex = j;
+						minDist = totalDist;
+					}
+				}
+
+				Person minPerson = remain.get(minIndex);
+				team.addMember(minPerson);
+				minPerson.setTeam(i);
+			}
+			Person lastPerson = person_data.stream().filter(p -> p.getTeam() == -1).findFirst().orElse(null);
+			if (lastPerson == null) {
+				team_table.getItems().addAll(teams);
+				return;
+			}
+			int maxIndex = 0;
+			int minIndex = 0;
+			double maxValue = 0;
+			double minValue = 1000;
+			for (int i = 0; i < size / 3; ++i) {
+				double average = teams[i].teamAvg();
+				if (average > maxValue) {
+					maxValue = average;
+					maxIndex = i;
+				}
+				if (average < minValue) {
+					minValue = average;
+					minIndex = i;
+				}
+			}
+			if ((double) (lastPerson.getK1energy() + lastPerson.getK2energy()) / 2 <= (k1Hat + k2Hat) / 2) {
+				teams[maxIndex].addMember(lastPerson);
+			} else {
+				teams[minIndex].addMember(lastPerson);
+			}
+			team_table.getItems().addAll(teams);
+
+			maxIndex = 0;
+			minIndex = 0;
+			maxValue = 0;
+			minValue = 1000;
+			for (int i = 0; i < size / 3; ++i) {
+				double average = teams[i].teamAvg();
+				if (average > maxValue) {
+					maxValue = average;
+					maxIndex = i;
+				}
+				if (average < minValue) {
+					minValue = average;
+					minIndex = i;
+				}
 			}
 		});
 	}
