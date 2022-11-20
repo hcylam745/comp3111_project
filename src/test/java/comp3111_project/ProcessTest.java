@@ -1,17 +1,12 @@
 package comp3111_project;
 
-import comp3111_project.engine.ATU;
+import comp3111_project.engine.ATUEngine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
 
 /**
  * Test for process
@@ -39,9 +34,12 @@ public class ProcessTest {
      */
     @Test
     public void TestConstructor() {
-        ATU engine = new ATU(list);
-        int size = list.size()/3;
-        assertEquals(engine.getK1().size(),size);
-    }
+        List<List<Person>> engine = ATUEngine.run(list);
 
+        for(int i = 0 ; i < engine.size() - 1 ; ++i) {
+            double before = engine.get(i).stream().mapToInt(Person::getK1energy).average().orElse(-1);
+            double after = engine.get(i + 1).stream().mapToInt(Person::getK1energy).average().orElse(-1);
+            assert before >= after;
+        }
+    }
 }
