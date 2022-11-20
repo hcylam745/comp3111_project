@@ -2,38 +2,47 @@ package comp3111_project;
 
 import static org.junit.Assert.*;
 
-import javafx.scene.control.TableView;
 import org.junit.Before;
 import org.junit.Test;
 
-import javafx.scene.control.TextField;
 
 
 
 public class OutputTester {
+
+    Team x;
+    Person pOne;
+    Person pTwo;
+    /**
+     * Initalize the necessary variables for the test
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
-        Team x;
-        Person y;
-        OutputPerson z;
-    }
-    
-    @Test
-    public void testOutputPerson() throws Exception {
-        //test OutputPerson class function
-        OutputPerson p1 = new OutputPerson("12345678", "John", 1, new Team());
-        OutputPerson p2 = new OutputPerson("87654321", "Mary", 2, new Team());
-        p1.getStudentid();
-        p1.getStudentname();
-        p1.getTeamId();
-        p1.getTeamMembers();
-        p1.getTeamAvgk1();
-        p1.getTeamAvgk2();
+        x = new Team();
+        pOne = new Person("12345678","John","p1.com","80", "100" ,"1" ,"0","0","");
+        pTwo = new Person("87654321","Mary","p1.com","60", "90" ,"1" ,"0","0","");
+        x.addMember(pOne);
+        x.addMember(pTwo);
     }
 
+    /**
+     * Test the OutputPerson class
+     *
+     * @throws Exception
+     */
     @Test
-    public void TestLibrary() throws Exception{
-        Library.main(null);
-        
+    public void testOutputPerson() throws Exception {
+        OutputPerson p1 = new OutputPerson(pOne.getStudentid(), pOne.getStudentname(),  1,x);
+        OutputPerson p2 = new OutputPerson(pTwo.getStudentid(), pTwo.getStudentname(), 1,x);
+        assertEquals("12345678",p1.getStudentid());
+        assertEquals("John",p1.getStudentname());
+        assertEquals("87654321",p2.getStudentid());
+        assertEquals("Mary",p2.getStudentname());
+        assertEquals(1,(int) p1.getTeamId());
+        assertEquals( 1,(int)p2.getTeamId());
+        assertEquals(70.0f, x.averageK1(), 0.01);
+        assertEquals(70.0f,p1.getTeamAvgk1(), 0.01);
+        assertEquals(95.0f, p2.getTeamAvgk2(),  0.01);
     }
 }

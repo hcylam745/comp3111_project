@@ -3,6 +3,7 @@ package comp3111_project;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 /**
  * This class for junit to run tests on.
  * This specifically tests the Statistics class.

@@ -54,7 +54,7 @@ public class Library extends Application {
 	private static GridPane autogen_input = new GridPane();
 
 	private static Team teams[];
-
+	// Table to store team information
 	public static TableView<Team> team_table;
 	// stat_data is used to store the data from the processed statistics.
 	private final static ObservableList<Statistics> stat_data = FXCollections.observableArrayList();
@@ -366,6 +366,11 @@ public class Library extends Application {
 		});
 	}
 
+	/**
+	 * Main function
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("Hello");
@@ -374,6 +379,10 @@ public class Library extends Application {
 
 	}
 
+	/**
+	 * This start function is resposible for creating the GUI and setting up the
+	 *
+	 */
 	@Override
 	public void start(Stage stage_stat) throws Exception{
 
@@ -534,6 +543,9 @@ public class Library extends Application {
 		// add search box to the scene
 		vbox_person.getChildren().addAll(searchBox, searchBox2, searchButton, showStatisticsButton);
 		searchButton.setOnAction(new EventHandler<ActionEvent>() {
+			/**
+			 * This method is called when the search button is clicked.
+			 */
 			@Override
 			public void handle(ActionEvent event) {
 				String targetStudentId = searchBox.getText();
@@ -607,7 +619,7 @@ public class Library extends Application {
 					int size = teams[target.getTeamId()].getNumberOfMembers();
 					int k = 0;
 					for (int i = 0; i < size; i++) {
-						if (teams[target.getTeamId()].getMember(i).getStudentid().equals(target.getStudentid())) {
+						if (teams[target.getTeamId()].getMember(i).getStudentid().equals(target.getStudentid()) || teams[target.getTeamId()].getMember(i).getStudentname().equals(target.getStudentname())) {
 							continue;
 						}
 						Label team_mate = (Label) root1.lookup("#teammate_" + (k + 1));
@@ -639,6 +651,10 @@ public class Library extends Application {
 
 		// show the stage when showGraphsButton is clicked
 		showGraphsButton.setOnAction(new EventHandler<ActionEvent>() {
+			/**
+			 * This function shows the individual student's energy 
+			 * @param event
+			 */
 			@Override
 			public void handle(ActionEvent event) {
 				// defining the axes
@@ -682,6 +698,10 @@ public class Library extends Application {
 		stage_person.setScene(scene_person);
 		// show the stage when showTeamAvgButton is clicked
 		showTeamAvgButton.setOnAction(new EventHandler<ActionEvent>() {
+			/**
+			 * This will generate the team average energy
+			 * @param event
+			 */
 			@Override
 			public void handle(ActionEvent event) {
 				final NumberAxis teamXAxis = new NumberAxis();

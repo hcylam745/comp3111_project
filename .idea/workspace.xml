@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14e26c99-924e-46bb-9f99-5325cee8d5c3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATUEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/engine/ATU.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/OutputPerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/OutputPerson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Statistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Statistics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/utils/MergeSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/utils/MergeSort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/InputTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/InputTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/OutputTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/OutputTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/PersonTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/PersonTester.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/ProcessTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/ProcessTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/StatisticsTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/StatisticsTester.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,145 +77,93 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/home/patrick/Documents/HKUST/Fall2022/COMP3111/Project/test/comp3111_project",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.4218391",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/siddarth/COMP 3111/javafx-sdk-19/lib&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4218391&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Gradle.Tests in 'comp3111_project' (1)">
-    <configuration name="InputTester.test1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;comp3111_project.InputTester.test1&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+}</component>
+  <component name="RunManager" selected="JUnit.comp3111_project in comp3111_project.test">
+    <configuration name="All in comp3111_project (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="comp3111_project" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="OutputTester.TestLibrary" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;comp3111_project.OutputTester.TestLibrary&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="All in comp3111_project" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="comp3111_project" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="ProcessTest.TestConstructor" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;comp3111_project.ProcessTest.TestConstructor&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="OutputTester.testOutputPerson" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="comp3111_project.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="comp3111_project.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="comp3111_project" />
+      <option name="MAIN_CLASS_NAME" value="comp3111_project.OutputTester" />
+      <option name="METHOD_NAME" value="testOutputPerson" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="Tests in 'comp3111_project' (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;comp3111_project.*&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="PersonTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="comp3111_project.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="comp3111_project.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="comp3111_project" />
+      <option name="MAIN_CLASS_NAME" value="comp3111_project.PersonTester" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="Tests in 'comp3111_project'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="comp3111_project in comp3111_project.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="comp3111_project.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="comp3111_project.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="comp3111_project" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.ProcessTest.TestConstructor" />
-      <item itemvalue="Gradle.InputTester.test1" />
-      <item itemvalue="Gradle.Tests in 'comp3111_project' (1)" />
-      <item itemvalue="Gradle.OutputTester.TestLibrary" />
-      <item itemvalue="Gradle.Tests in 'comp3111_project'" />
+      <item itemvalue="JUnit.All in comp3111_project" />
+      <item itemvalue="JUnit.All in comp3111_project (1)" />
+      <item itemvalue="JUnit.OutputTester.testOutputPerson" />
+      <item itemvalue="JUnit.PersonTester" />
+      <item itemvalue="JUnit.comp3111_project in comp3111_project.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Tests in 'comp3111_project' (1)" />
-        <item itemvalue="Gradle.ProcessTest.TestConstructor" />
-        <item itemvalue="Gradle.OutputTester.TestLibrary" />
-        <item itemvalue="Gradle.InputTester.test1" />
-        <item itemvalue="Gradle.Tests in 'comp3111_project'" />
+        <item itemvalue="JUnit.comp3111_project in comp3111_project.test" />
+        <item itemvalue="JUnit.OutputTester.testOutputPerson" />
+        <item itemvalue="JUnit.All in comp3111_project (1)" />
+        <item itemvalue="JUnit.All in comp3111_project" />
+        <item itemvalue="JUnit.PersonTester" />
       </list>
     </recent_temporary>
   </component>
@@ -230,11 +189,20 @@
       </map>
     </option>
   </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project_.ic" NAME="Tests in 'comp3111_project' Coverage Results" MODIFIED="1668613924148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project___1_.ic" NAME="Tests in 'comp3111_project' (1) Coverage Results" MODIFIED="1668614866097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$All_in_comp3111_project__1_.ic" NAME="All in comp3111_project (1) Coverage Results" MODIFIED="1668872677872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$OutputTester_TestLibrary.ic" NAME="OutputTester.TestLibrary Coverage Results" MODIFIED="1668614927562" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$PersonTester.ic" NAME="PersonTester Coverage Results" MODIFIED="1668510648025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project___1_.ic" NAME="Tests in 'comp3111_project' (1) Coverage Results" MODIFIED="1668939642228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project_.ic" NAME="Tests in 'comp3111_project' Coverage Results" MODIFIED="1668613924148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$OutputTester.ic" NAME="OutputTester Coverage Results" MODIFIED="1668534345348" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$All_in_comp3111_project.ic" NAME="All in comp3111_project Coverage Results" MODIFIED="1668872637425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$comp3111_project_in_comp3111_project_test.ic" NAME="comp3111_project in comp3111_project.test Coverage Results" MODIFIED="1668872685912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>comp3111_project.*</FILTER>
+    </SUITE>
   </component>
 </project>

@@ -5,6 +5,9 @@ import comp3111_project.Person;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Util class for doing Merge sort, useful for Process
+ */
 public class MergeSort {
 
     private static List<Person> merge(List<Person> left, List<Person> right, int k) {
@@ -34,6 +37,12 @@ public class MergeSort {
         return newPerson;
     }
 
+    /**
+     * Sorts person objects in descending if k=1 and ascending if k=1
+     * @param person
+     * @param k
+     * @return
+     */
     public static List<Person> sort(List<Person> person, int k) {
         int l = 0, r = person.size() - 1;
         if (l == r)

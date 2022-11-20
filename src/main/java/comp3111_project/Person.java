@@ -4,6 +4,9 @@ import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 
+/**
+ * This is the association class used to connect the main function to the ATU engine
+ */
 public class Person {
 	private final SimpleStringProperty studentid;
 	private final SimpleStringProperty studentname;
@@ -16,6 +19,18 @@ public class Person {
 	private Boolean mypreference;
 	private final SimpleStringProperty concerns;
 
+	/**
+	 * Constructor of a person
+	 * @param student_id
+	 * @param student_name
+	 * @param email
+	 * @param k1_energy
+	 * @param k2_energy
+	 * @param k3_tick1
+	 * @param k3_tick2
+	 * @param my_preference
+	 * @param concerns
+	 */
 	public Person(String student_id, String student_name, String email, String k1_energy, String k2_energy, String k3_tick1,
 			String k3_tick2, String my_preference, String concerns) {
 		this.studentid = new SimpleStringProperty(student_id);
@@ -39,77 +54,91 @@ public class Person {
 		this.concerns = new SimpleStringProperty(concerns);
 	}
 
+	/**
+	 * Get person's studentID
+	 * @return
+	 */
 	public String getStudentid() {
 		return studentid.get();
 	}
 
-//	public void setStudentid(String val) {
-//		studentid.set(val);
-//	}
-
+	/**
+	 * Get person's email
+	 * @return
+	 */
 	public String getEmail() {
 		return email.get();
 	}
-	
+
+	/**
+	 * get Person's name
+	 * @return
+	 */
 	public String getStudentname() {
 		return studentname.get();
 	}
 
-//	public void setStudentname(String val) {
-//		studentname.set(val);
-//	}
-
+	/**
+	 * get Person's K1 Energy
+	 * @return
+	 */
 	public Integer getK1energy() {
 		return k1energy;
 	}
 
-//	public void setK1energy(String val) {
-//		k1energy.set(val);
-//	}
-
+	/**
+	 * get Person's K2 energy
+	 * @return
+	 */
 	public Integer getK2energy() {
 		return k2energy;
 	}
 
-//	public void setK2energy(String val) {
-//		k2energy.set(val);
-//	}
-
+	/**
+	 * 	get Person's K3 tick1 preference
+	 * @return
+	 */
 	public Boolean getK3tick1() {
 		return k3tick1;
 	}
 
-//	public void setK3trick1(String val) {
-//		k3trick1.set(val);
-//	}
-
+	/**
+	 * get Person's K3 tick 2 preference
+	 * @return
+	 */
 	public Boolean getK3tick2() {
 		return k3tick2;
 	}
 
-//	public void setK3trick2(String val) {
-//		k3trick2.set(val);
-//	}
-
+	/**
+	 * get Person's preference on being a leader
+	 * @return
+	 */
 	public Boolean getMypreference() {
 		return mypreference;
 	}
 
-//	public void setMypreference(String val) {
-//		mypreference.set(val);
-//	}
-
+	/**
+	 * get Person's concerns
+	 * @return
+	 */
 	public String getConcerns() {
 		return concerns.get();
 	}
 
+	/**
+	 * Associate a person with a paritcular team
+	 * @param x
+	 */
 	public void setTeam(int x) {
 		this.TeamNumber = x;
 	}
+
+	/**
+	 * get a Person's team id
+ 	 * @return
+	 */
 	public int getTeam() {
 		return this.TeamNumber;
 	}
-//	public void setConcerns(String val) {
-//		concerns.set(val);
-//	}
 }
