@@ -1,22 +1,24 @@
 package comp3111_project;
 
-import com.sun.javafx.application.PlatformImpl;
-import comp3111_project.engine.ATU;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import comp3111_project.engine.ATUEngine;
 import comp3111_project.utils.MergeSort;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import java.io.*;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
@@ -27,18 +29,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 
 /**
  * This class is the main program for the automatic team assigning program, containing the driving code for input, process and output sections.
@@ -353,129 +348,21 @@ public class Library extends Application {
 		canAllocate = false;
 		Platform.runLater(() -> {
 			team_table = new TableView<>();
-			ATU atu = new ATU(person_data);
-			int size = person_data.size();
-			double k1Hat = person_data.stream().mapToInt(Person::getK1energy).average().orElse(-1);
-			double k2Hat = person_data.stream().mapToInt(Person::getK2energy).average().orElse(-1);
-			List<Person> k1List = atu.getK1();
-			List<Person> remain = atu.getRemain();
+			List<List<Person>> team_two = ATUEngine.run(FXCollections.observableArrayList(MergeSort.sort(person_data,1)));
 
-			teams = new Team[size / 3];
-			for (int i = 0; i < size / 3; ++i) {
-				Person p = k1List.get(i);
-				if (teams[i] == null) {
+			teams = new Team[team_two.size()];
+			for(int i = 0; i < teams.length; ++i) {
+				if(teams[i] == null){
 					teams[i] = new Team();
 				}
-				teams[i].addMember(p);
-				p.setTeam(i);
-			}
-
-			for (int i = 0; i < size / 3; ++i) {
-				Team team = teams[i];
-				Person k1Member = team.getMember(0);
-
-				double k1 = k1Member.getK1energy();
-				double k2 = k1Member.getK2energy();
-
-				double minDist = -1;
-				int minIndex = -1;
-				for (int j = 0; j < size / 3; ++j) {
-					Person remainPerson = remain.get(j);
-					if (remainPerson.getTeam() != -1)
-						continue;
-
-					double remainK1 = remainPerson.getK1energy();
-					double reminaK2 = remainPerson.getK2energy();
-
-					double totalK1Average = (k1 + remainK1) / 2;
-					double totalK2Average = (k2 + reminaK2) / 2;
-
-					double totalDist = Math.sqrt(Math.pow(totalK1Average - k1Hat, 2) + Math.pow(totalK2Average - k2Hat, 2));
-					if ((minDist == -1 && minIndex == -1) || totalDist < minDist) {
-						minIndex = j;
-						minDist = totalDist;
-					}
+				List<Person> thisTeam = team_two.get(i);
+				for(int j = 0 ; j < thisTeam.size(); ++j) {
+					Person p = thisTeam.get(j);
+					teams[i].addMember(p);
+					p.setTeam(i);
 				}
-
-				Person minPerson = remain.get(minIndex);
-				team.addMember(minPerson);
-				minPerson.setTeam(i);
-			}
-
-			for (int i = 0; i < size / 3; ++i) {
-				Team team = teams[i];
-				Person k1Member = team.getMember(0);
-				Person k2Memeber = team.getMember(1);
-
-				double k1 = (double) (k1Member.getK1energy() + k2Memeber.getK1energy()) / 2;
-				double k2 = (double) (k1Member.getK2energy() + k2Memeber.getK2energy()) / 2;
-
-				double minDist = -1;
-				int minIndex = -1;
-				for (int j = 0; j < size / 3; ++j) {
-					Person remainPerson = remain.get(j);
-					if (remainPerson.getTeam() == -1)
-						continue;
-
-					double remainK1 = remainPerson.getK1energy();
-					double reminaK2 = remainPerson.getK2energy();
-
-					double totalK1Average = (k1 + remainK1) / 2;
-					double totalK2Average = (k2 + reminaK2) / 2;
-
-					double totalDist = Math.sqrt(Math.pow(totalK1Average - k1Hat, 2) + Math.pow(totalK2Average - k2Hat, 2));
-					if ((minDist == -1 && minIndex == -1) || totalDist < minDist) {
-						minIndex = j;
-						minDist = totalDist;
-					}
-				}
-
-				Person minPerson = remain.get(minIndex);
-				team.addMember(minPerson);
-				minPerson.setTeam(i);
-			}
-			Person lastPerson = person_data.stream().filter(p -> p.getTeam() == -1).findFirst().orElse(null);
-			if (lastPerson == null) {
-				team_table.getItems().addAll(teams);
-				return;
-			}
-			int maxIndex = 0;
-			int minIndex = 0;
-			double maxValue = 0;
-			double minValue = 1000;
-			for (int i = 0; i < size / 3; ++i) {
-				double average = teams[i].teamAvg();
-				if (average > maxValue) {
-					maxValue = average;
-					maxIndex = i;
-				}
-				if (average < minValue) {
-					minValue = average;
-					minIndex = i;
-				}
-			}
-			if ((double) (lastPerson.getK1energy() + lastPerson.getK2energy()) / 2 <= (k1Hat + k2Hat) / 2) {
-				teams[maxIndex].addMember(lastPerson);
-			} else {
-				teams[minIndex].addMember(lastPerson);
 			}
 			team_table.getItems().addAll(teams);
-
-			maxIndex = 0;
-			minIndex = 0;
-			maxValue = 0;
-			minValue = 1000;
-			for (int i = 0; i < size / 3; ++i) {
-				double average = teams[i].teamAvg();
-				if (average > maxValue) {
-					maxValue = average;
-					maxIndex = i;
-				}
-				if (average < minValue) {
-					minValue = average;
-					minIndex = i;
-				}
-			}
 		});
 	}
 
@@ -677,7 +564,7 @@ public class Library extends Application {
 					person_table.scrollTo(targetPerson);
 					System.out.println(targetPerson.getTeam());
 					OutputPerson target = new OutputPerson(targetPerson.getStudentid(), targetPerson.getStudentname(),
-							targetPerson.getTeam(), teams[targetPerson.getTeam() - 1]);
+							targetPerson.getTeam(), teams[targetPerson.getTeam()]);
 					// make a new table to show the person
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudentInquiry.fxml"));
 					// fxmlLoader.setLocation(FXMLDocumentController.class.getResource("src/main/resources/StudentInquiry.fxml"));
@@ -717,14 +604,14 @@ public class Library extends Application {
 					k1_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk1())));
 					k2_avg.setText(String.valueOf(String.valueOf(target.getTeamAvgk2())));
 
-					int size = teams[target.getTeamId() - 1].getNumberOfMembers();
+					int size = teams[target.getTeamId()].getNumberOfMembers();
 					int k = 0;
 					for (int i = 0; i < size; i++) {
-						if (teams[target.getTeamId() - 1].getMember(i).getStudentid().equals(target.getStudentid())) {
+						if (teams[target.getTeamId()].getMember(i).getStudentid().equals(target.getStudentid())) {
 							continue;
 						}
 						Label team_mate = (Label) root1.lookup("#teammate_" + (k + 1));
-						team_mate.setText(teams[target.getTeamId() - 1].getMember(i).getStudentname());
+						team_mate.setText(teams[target.getTeamId()].getMember(i).getStudentname());
 						k++;
 					}
 
