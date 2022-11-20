@@ -11,8 +11,7 @@ import java.util.Optional;
 /**
  * Logic for Teaming up Engine
  */
-public class ATU implements ATUInterface {
-    private final ObservableList<Person> person;
+public class ATU {
     private final List<Person> k1;
     private final List<Person> remain;
 
@@ -21,22 +20,9 @@ public class ATU implements ATUInterface {
      * @param person All the people in the database
      */
     public ATU(ObservableList<Person> person) {
-        this.person = person;
         List<Person> sorted = MergeSort.sort(person,1);
         k1 = sorted.subList(0,person.size() / 3);
         remain = sorted.subList(person.size() / 3,sorted.size());
-    }
-
-    /**
-     * Add person into a team
-     * @param i team number
-     * @param k which sample to pick a person from
-     * @param target Only for person k = 3 to calculate the dot product
-     * @return person to be put into a team
-     */
-    @Override
-    public Optional<Person> selectK(int i, int k, Integer...target) {
-        return null;
     }
 
     /**

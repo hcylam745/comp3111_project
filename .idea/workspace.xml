@@ -21,7 +21,17 @@
         <task path="$PROJECT_DIR$">
           <activation />
         </task>
-        <projects_view />
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="comp3111_project" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -46,18 +56,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/home/patrick/Documents/HKUST/Fall2022/COMP3111/Project/dev_pat/comp3111_project",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.4218391",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/patrick/Documents/HKUST/Fall2022/COMP3111/Project/dev_pat/comp3111_project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4218391&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Gradle.OutputTester.TestLibrary">
+}</component>
+  <component name="RunManager" selected="Gradle.Tests in 'comp3111_project' (1)">
     <configuration name="Library" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="17" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -173,8 +183,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.OutputTester.TestLibrary" />
         <item itemvalue="Gradle.Tests in 'comp3111_project' (1)" />
+        <item itemvalue="Gradle.OutputTester.TestLibrary" />
         <item itemvalue="Gradle.InputTester.test1" />
         <item itemvalue="Gradle.Tests in 'comp3111_project'" />
         <item itemvalue="Application.Library" />
@@ -207,7 +217,7 @@
     <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project_.ic" NAME="Tests in 'comp3111_project' Coverage Results" MODIFIED="1668613924148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$OutputTester_TestLibrary.ic" NAME="OutputTester.TestLibrary Coverage Results" MODIFIED="1668614927562" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$PersonTester.ic" NAME="PersonTester Coverage Results" MODIFIED="1668510648025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project___1_.ic" NAME="Tests in 'comp3111_project' (1) Coverage Results" MODIFIED="1668614866097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project___1_.ic" NAME="Tests in 'comp3111_project' (1) Coverage Results" MODIFIED="1668913601710" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$OutputTester.ic" NAME="OutputTester Coverage Results" MODIFIED="1668534345348" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
