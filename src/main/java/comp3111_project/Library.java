@@ -548,6 +548,8 @@ public class Library extends Application {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
+				try{
+				
 				String targetStudentId = searchBox.getText();
 				String targetStudentName = searchBox2.getText();
 				Person targetPerson;
@@ -630,7 +632,13 @@ public class Library extends Application {
 					// change label in the fxml file
 
 					test_stage.show();
+				}
+					
+					
 					// pass the person to the new table
+				}
+				catch(Exception e){
+					System.out.println("Invalid Search Inquiry");
 				}
 			}
 		});
