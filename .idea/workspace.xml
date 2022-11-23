@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="4" />
     <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
   </component>
   <component name="AutoImportSettings">
@@ -8,19 +9,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14e26c99-924e-46bb-9f99-5325cee8d5c3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/test/comp3111_project/PersonTester.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Library.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/OutputPerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/OutputPerson.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Statistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Statistics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/Team.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp3111_project/utils/MergeSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp3111_project/utils/MergeSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/InputTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/InputTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/OutputTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/OutputTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/PersonTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/PersonTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/ProcessTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/ProcessTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/comp3111_project/StatisticsTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/comp3111_project/StatisticsTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/main/.gitignore" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +192,7 @@
     <SUITE FILE_PATH="coverage/comp3111_project$Tests_in__comp3111_project_.ic" NAME="Tests in 'comp3111_project' Coverage Results" MODIFIED="1668613924148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$OutputTester.ic" NAME="OutputTester Coverage Results" MODIFIED="1668534345348" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/comp3111_project$All_in_comp3111_project.ic" NAME="All in comp3111_project Coverage Results" MODIFIED="1668872637425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/comp3111_project$comp3111_project_in_comp3111_project_test.ic" NAME="comp3111_project in comp3111_project.test Coverage Results" MODIFIED="1668872685912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/comp3111_project$comp3111_project_in_comp3111_project_test.ic" NAME="comp3111_project in comp3111_project.test Coverage Results" MODIFIED="1669122330806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>comp3111_project.*</FILTER>
     </SUITE>
   </component>
